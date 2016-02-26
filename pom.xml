@@ -2,12 +2,21 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+<<<<<<< HEAD
   <groupId>glazer.neuhoff.bejeweled</groupId>
   <artifactId>glazer.neuhoff.bejeweled</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>glazer.neuhoff.bejeweled</name>
+=======
+  <groupId>glazer-neuhoff</groupId>
+  <artifactId>game</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>game</name>
+>>>>>>> dcfa250452d98ffdf511ef5d0e7edf38d9ecec3e
   <url>http://maven.apache.org</url>
 
   <properties>
