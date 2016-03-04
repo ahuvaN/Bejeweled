@@ -19,3 +19,7 @@ public class RedSquare extends ShapeComponent {
 		super.repaint();
 	}
 }
+//go to the labels..make it a sep class, it has an image, also returns a cursor, on click on label , return a cursor
+//while clicked==true, only enable mouse within area
+//we only need one button calss bec. all have the same code and we'll just pass in the filename of the icon
+//use buttons and set icon, set cursor, set label type!!!!!!!!!
