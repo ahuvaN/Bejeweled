@@ -4,26 +4,26 @@ import java.util.LinkedList;
 
 public class ShapeQueue {
 
-	private LinkedList<ShapeComponent> list;
+	private LinkedList<ShapeLabel> list;
 
 	public ShapeQueue() {
-		this.list = new LinkedList<ShapeComponent>();
+		this.list = new LinkedList<ShapeLabel>();
 	}
 
 	public void reset() {
 		this.list.clear();
 	}
 
-	public void enqueue(ShapeComponent data) {
+	public void enqueue(ShapeLabel data) {
 		list.add(data);
 	}
 
-	public ShapeComponent dequeue() {
-		ShapeComponent data = list.removeFirst();
+	public ShapeLabel dequeue() {
+		ShapeLabel data = list.removeFirst();
 		return data;
 	}
 
-	public ShapeComponent peek() {
+	public ShapeLabel peek() {
 		return list.getFirst();
 	}
 

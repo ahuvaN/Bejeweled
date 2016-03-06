@@ -16,9 +16,7 @@ public class GridPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	// private ShapeComponent[][] grid;
 	private ShapeLabel[][] grid;
-	// private JComponent shape;
 	private Color navyBlue;
 	// queue may be unnecessary
 	private int shapeNum;
@@ -41,11 +39,8 @@ public class GridPanel extends JPanel {
 		this.random = new Random();
 		this.navyBlue = new Color(76, 0, 153);
 		setBackground(navyBlue);
-		// this.grid = new JLabel[8][8];
-		// this.grid = new ShapeComponent[8][8];
 		this.grid = new ShapeLabel[rows][cols];
-		shapes = new ShapeLabel[] {
-				new ShapeLabel("/purple.png", 0, -1, -1),
+		shapes = new ShapeLabel[] { new ShapeLabel("/purple.png", 0, -1, -1),
 				new ShapeLabel("/blue.png", 1, -1, -1),
 				new ShapeLabel("/green.png", 2, -1, -1),
 				new ShapeLabel("/orange.png", 3, -1, -1),
@@ -54,7 +49,6 @@ public class GridPanel extends JPanel {
 				new ShapeLabel("/yellow.png", 6, -1, -1) };
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
-				// grid[row][col] = new JLabel(row + ", " + col);
 				grid[row][col] = getNextShape(row, col);
 				add(grid[row][col]);
 				mouseClicked = false;
@@ -122,12 +116,12 @@ public class GridPanel extends JPanel {
 	}
 
 	public void checkForMultiples() {
-		checkHorizontalMatches();
-		checkVerticalMatches();
+		checkBoardVerticalMatches();
+		checkBoardHorizontalMatches();
 
 	}
 
-	private void checkVerticalMatches() {
+	private void checkBoardVerticalMatches() {
 		// check vertical rows
 		int count = 3;
 		int next;
@@ -154,7 +148,7 @@ public class GridPanel extends JPanel {
 		}
 	}
 
-	private void checkHorizontalMatches() {
+	private void checkBoardHorizontalMatches() {
 		// check horizontal rows
 		int count = 3;
 		boolean more = true;
@@ -207,17 +201,12 @@ public class GridPanel extends JPanel {
 		while (pRow > 0) {
 			grid[pRow][pCol].setIconPic(grid[pRow - 1][pCol].getIconPic());
 			grid[pRow][pCol].setId(grid[pRow - 1][pCol].getId());
-			// grid[pRow][pCol]=grid[pRow-1][pCol];
-			grid[pRow][pCol].setBackground(Color.BLACK);
-			grid[pRow][pCol].setOpaque(true);
 			pRow--;
 		}
 		ShapeLabel s = getNextShape(pRow, pCol);
-		grid[0][pCol] = s;
-		grid[0][pCol].setBackground(Color.BLACK);
-		grid[0][pCol].setOpaque(true);
-		// grid[pRow][pCol]=getNextShape(pRow, pCol);
-
+		//grid[0][pCol] = s;
+	grid[0][pCol].setIconPic(s.getIconPic());
+	grid[0][pCol].setId(s.getId());
 	}
 
 	MouseListener listener = new MouseListener() {
@@ -227,12 +216,9 @@ public class GridPanel extends JPanel {
 
 		public void mouseEntered(MouseEvent e2) {
 			if (mouseClicked) {
-				System.out.println("entered!!!!" + e2.getComponent());
 				enteredLabel = (ShapeLabel) e2.getComponent();
-
 				enteredRow = enteredLabel.getRow();
 				enteredCol = enteredLabel.getCol();
-				System.out.println("entered  " + enteredRow + " " + enteredCol);
 			}
 		}
 
@@ -241,28 +227,116 @@ public class GridPanel extends JPanel {
 		}
 
 		public void mousePressed(MouseEvent e) {
-			System.out.println("pressed" + e.getComponent());
 			mouseClicked = true;
 			pressedLabel = (ShapeLabel) e.getComponent();
-			System.out.println("pressed  " + pressedLabel.getRow() + " "
-					+ pressedLabel.getCol());
+			pressedRow = pressedLabel.getRow();
+			pressedCol = pressedLabel.getCol();
 			setCursor(pressedLabel.getCursor());
 		}
 
 		public void mouseReleased(MouseEvent e) {
 			mouseClicked = false;
-			// System.out.println("released" + e.getComponent());
-
-			ShapeLabel e4 = (ShapeLabel) e.getComponent();
-			e4.getId();
-			pressedRow = e4.getRow();
-			pressedCol = e4.getCol();
-			System.out.println("released  " + pressedRow + " " + pressedCol);
 			setCursor(Cursor.getDefaultCursor());
-			if (!(enteredRow == pressedRow && enteredCol == pressedCol)) {
+			if (!(enteredRow == pressedRow && enteredCol == pressedCol)
+					&& swapAllowed()) {
 				swap();
+				checkAgain = false;
+				do {
+					checkAgain = false;
+					checkForMultiples();
+				} while (checkAgain);
+
 			}
 		}
 
 	};
+
+	private boolean swapAllowed() {
+		// TODO Auto-generated method stub
+		if (validSwapLocation() && willBeMatch()) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean willBeMatch() {
+		// TODO Auto-generated method stub
+		if (checkHorizontal(this.pressedRow, this.pressedCol, this.enteredLabel)
+				|| checkHorizontal(this.enteredRow, this.enteredCol,
+						this.pressedLabel)
+				|| checkVertical(this.pressedRow, this.pressedCol,
+						this.enteredLabel)
+				|| checkVertical(this.enteredRow, this.enteredCol,
+						this.pressedLabel)) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean checkVertical(int row1, int col1, ShapeLabel piece2) {
+		// TODO Auto-generated method stub
+		if (row1 + 2 < rows && piece2.getId() == grid[row1 + 1][col1].getId()
+				&& (!piece2.equals(grid[row1 + 1][col1]))
+				&& piece2.getId() == grid[row1 + 2][col1].getId()
+				&& (!piece2.equals(grid[row1 + 2][col1]))) {
+			System.out.println(piece2.getRow() + " " + piece2.getCol()
+					+ "2 lower");
+			return true;
+		} else if ((row1 + 1 < rows && row1 - 1 >= 0)
+				&& piece2.getId() == grid[row1 + 1][col1].getId()
+				&& (!piece2.equals(grid[row1 + 1][col1]))
+				&& piece2.getId() == grid[row1 - 1][col1].getId()
+				&& (!piece2.equals(grid[row1 - 1][col1]))) {
+			System.out.println(piece2.getRow() + " " + piece2.getCol()
+					+ "1 upper, 1 lower");
+			return true;
+		} else if ((row1 - 2 >= 0)
+				&& piece2.getId() == grid[row1 - 1][col1].getId()
+				&& (!piece2.equals(grid[row1 - 1][col1]))
+				&& piece2.getId() == grid[row1 - 2][col1].getId()
+				&& (!piece2.equals(grid[row1 - 2][col1]))) {
+			System.out.println(piece2.getRow() + " " + piece2.getCol()
+					+ "2 upper");
+			return true;
+		}
+		return false;
+	}
+
+	private boolean checkHorizontal(int row1, int col1, ShapeLabel piece2) {
+		if (col1 + 2 < cols && piece2.getId() == grid[row1][col1 + 1].getId()
+				&& (!piece2.equals(grid[row1][col1 + 1]))
+				&& piece2.getId() == grid[row1][col1 + 2].getId()
+				&& (!piece2.equals(grid[row1][col1 + 2]))) {
+			System.out.println(piece2.getRow() + " " + piece2.getCol()
+					+ "2 right");
+			return true;
+		} else if ((col1 + 1 < cols && col1 - 1 >= 0)
+				&& piece2.getId() == grid[row1][col1 + 1].getId()
+				&& (!piece2.equals(grid[row1][col1 + 1]))
+				&& piece2.getId() == grid[row1][col1 - 1].getId()
+				&& (!piece2.equals(grid[row1][col1 - 1]))) {
+			System.out.println(piece2.getRow() + " " + piece2.getCol()
+					+ "1 left, 1 right");
+			return true;
+		} else if ((col1 - 2 >= 0)
+				&& piece2.getId() == grid[row1][col1 - 1].getId()
+				&& (!piece2.equals(grid[row1][col1 - 1]))
+				&& piece2.getId() == grid[row1][col1 - 2].getId()
+				&& (!piece2.equals(grid[row1][col1 - 2]))) {
+			System.out.println(piece2.getRow() + " " + piece2.getCol()
+					+ "2 left");
+			return true;
+		}
+		return false;
+	}
+
+	private boolean validSwapLocation() {
+		if (((this.enteredRow == pressedRow + 1 || this.enteredRow == pressedRow - 1) && this.enteredCol == pressedCol)
+				|| ((this.enteredCol == pressedCol + 1 || this.enteredCol == this.pressedCol - 1) && this.enteredRow == this.pressedRow)) {
+			return true;
+		}
+
+		return false;
+
+	}
 }
