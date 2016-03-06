@@ -29,7 +29,6 @@ public class BejeweledFrame extends JFrame {
 		container = getContentPane();
 		container.setLayout(new GridLayout(8, 8));
 		
-		add(container);
 		grid = new JLabel[8][8];
 		for (int row = 0; row < grid.length; row++) {
 			for (int col = 0; col < grid[row].length; col++) {
