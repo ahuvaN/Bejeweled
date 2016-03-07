@@ -19,30 +19,25 @@ public class GridPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private ShapeLabel[][] grid;
-	// queue may be unnecessary
-	private int shapeNum;
+	private final int ROWS = 8, COLS = 8;
+	private final Color backgroundColor = new Color(0, 0, 0, 150);
 	private Random random;
-	private boolean mouseClicked;
+	private ScorePanel scores;
+	private ShapeLabel[][] grid;
 	private ShapeLabel[] shapes;
-	private final int rows = 8;
-	private final int cols = 8;
-	private boolean checkAgain;
-	private int enteredRow;
-	private int enteredCol;
-	private ShapeLabel swapLabel;
-	private int pressedRow;
-	private int pressedCol;
-	private ShapeLabel pressedLabel;
-	private ShapeLabel enteredLabel;
+	private ShapeLabel swapLabel, pressedLabel, enteredLabel;
+	private int shapeNum, enteredRow, enteredCol, pressedRow, pressedCol;
+	private boolean mouseClicked, checkAgain;
 
-	public GridPanel() {
-		setLayout(new GridLayout(rows, cols));
-		setBackground(new Color(0, 0, 0, 150));
+	public GridPanel(ScorePanel score) {
+		setLayout(new GridLayout(ROWS, COLS));
+		setBackground(backgroundColor);
 		// setBackground(Color.BLUE);
 		setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
 		this.random = new Random();
-		this.grid = new ShapeLabel[rows][cols];
+		this.grid = new ShapeLabel[ROWS][COLS];
+		scores = score;
+		random = new Random();
 		shapes = new ShapeLabel[] { new ShapeLabel("/purple.png", 0, -1, -1),
 				new ShapeLabel("/blue.png", 1, -1, -1),
 				new ShapeLabel("/green.png", 2, -1, -1),
@@ -50,40 +45,40 @@ public class GridPanel extends JPanel {
 				new ShapeLabel("/red.png", 4, -1, -1),
 				new ShapeLabel("/white.png", 5, -1, -1),
 				new ShapeLabel("/yellow.png", 6, -1, -1) };
+
 		mouseClicked = false;
-		for (int row = 0; row < rows; row++) {
-			for (int col = 0; col < cols; col++) {
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
 				grid[row][col] = getNextShape(row, col);
 				add(grid[row][col]);
 				grid[row][col].addMouseListener(listener);
 			}
 		}
-
-		this.checkAgain = false;
+		mouseClicked = false;
+		checkAgain = false;
 		do {
-			showBoard();
-			this.checkAgain = false;
+			showBoard(); // display in console
+			checkAgain = false;
 			checkForMultiples();
 		} while (checkAgain);
-
-		showBoard();
+		showBoard(); // console
 
 	}
 
 	private void swap() {
-		this.swapLabel = new ShapeLabel(pressedLabel.getIconPic(),
+		swapLabel = new ShapeLabel(pressedLabel.getIconPic(),
 				pressedLabel.getId(), pressedLabel.getRow(),
 				pressedLabel.getCol());
-		this.pressedLabel.setIconPic(enteredLabel.getIconPic());
-		this.pressedLabel.setId(enteredLabel.getId());
-		this.enteredLabel.setIconPic(this.swapLabel.getIconPic());
-		this.enteredLabel.setId(this.swapLabel.getId());
+		pressedLabel.setIconPic(enteredLabel.getIconPic());
+		pressedLabel.setId(enteredLabel.getId());
+		enteredLabel.setIconPic(swapLabel.getIconPic());
+		enteredLabel.setId(swapLabel.getId());
 	}
 
 	private void showBoard() {
 		System.out.println();
-		for (int i = 0; i < rows; i++) {
-			for (int x = 0; x < cols; x++) {
+		for (int i = 0; i < ROWS; i++) {
+			for (int x = 0; x < COLS; x++) {
 				System.out.print(grid[i][x].getId() + " ");
 			}
 			System.out.println();
@@ -126,8 +121,8 @@ public class GridPanel extends JPanel {
 		int count = 3;
 		int next;
 		boolean more = true;
-		for (int m = rows - 1; m >= 2; m--) {
-			for (int n = cols - 1; n >= 0; n--) {
+		for (int m = ROWS - 1; m >= 2; m--) {
+			for (int n = COLS - 1; n >= 0; n--) {
 				if (grid[m][n].getId() == grid[m - 1][n].getId()
 						&& grid[m][n].getId() == grid[m - 2][n].getId()) {
 					next = m - 3;
@@ -140,7 +135,7 @@ public class GridPanel extends JPanel {
 							more = false;
 						}
 					}
-					this.checkAgain = true;
+					checkAgain = true;
 					System.out.println("true");
 					deleteNextVertical(grid[m][n], count);
 				}
@@ -153,8 +148,8 @@ public class GridPanel extends JPanel {
 		int count = 3;
 		boolean more = true;
 		int next;
-		for (int m = rows - 1; m >= 0; m--) {
-			for (int n = cols - 1; n >= 2; n--) {
+		for (int m = ROWS - 1; m >= 0; m--) {
+			for (int n = COLS - 1; n >= 2; n--) {
 				if (grid[m][n].getId() == grid[m][n - 1].getId()
 						&& grid[m][n].getId() == grid[m][n - 2].getId()) {
 					next = n - 3;
@@ -167,7 +162,7 @@ public class GridPanel extends JPanel {
 							more = false;
 						}
 					}
-					this.checkAgain = true;
+					checkAgain = true;
 					System.out.println("true");
 					deleteNextHorizontal(grid[m][n], count);
 					break;
@@ -182,6 +177,7 @@ public class GridPanel extends JPanel {
 		for (int i = colD; i > colD - count; i--) {
 			deletePiece(grid[rowD][i]);
 		}
+		scores.setScore(10);
 	}
 
 	private void deleteNextVertical(ShapeLabel shapeLabel, int count) {
@@ -191,6 +187,7 @@ public class GridPanel extends JPanel {
 			System.out.println(i + " delete " + colD);
 			deletePiece(grid[i][colD]);
 		}
+		scores.setScore(10);
 	}
 
 	private void deletePiece(ShapeLabel piece) {
@@ -239,18 +236,17 @@ public class GridPanel extends JPanel {
 			if (!(enteredRow == pressedRow && enteredCol == pressedCol)
 					&& swapAllowed()) {
 				swap();
+				setBackground(backgroundColor);
 				checkAgain = false;
 				do {
 					checkAgain = false;
 					checkForMultiples();
 				} while (checkAgain);
-
 			}
 		}
 	};
 
 	private boolean swapAllowed() {
-		// TODO Auto-generated method stub
 		if (validSwapLocation() && willBeMatch()) {
 			return true;
 		}
@@ -258,29 +254,24 @@ public class GridPanel extends JPanel {
 	}
 
 	private boolean willBeMatch() {
-		// TODO Auto-generated method stub
-		if (checkHorizontal(this.pressedRow, this.pressedCol, this.enteredLabel)
-				|| checkHorizontal(this.enteredRow, this.enteredCol,
-						this.pressedLabel)
-				|| checkVertical(this.pressedRow, this.pressedCol,
-						this.enteredLabel)
-				|| checkVertical(this.enteredRow, this.enteredCol,
-						this.pressedLabel)) {
+		if (checkHorizontal(pressedRow, pressedCol, enteredLabel)
+				|| checkHorizontal(enteredRow, enteredCol, pressedLabel)
+				|| checkVertical(pressedRow, pressedCol, enteredLabel)
+				|| checkVertical(enteredRow, enteredCol, pressedLabel)) {
 			return true;
 		}
 		return false;
 	}
 
 	private boolean checkVertical(int row1, int col1, ShapeLabel piece2) {
-		// TODO Auto-generated method stub
-		if (row1 + 2 < rows && piece2.getId() == grid[row1 + 1][col1].getId()
+		if (row1 + 2 < ROWS && piece2.getId() == grid[row1 + 1][col1].getId()
 				&& (!piece2.equals(grid[row1 + 1][col1]))
 				&& piece2.getId() == grid[row1 + 2][col1].getId()
 				&& (!piece2.equals(grid[row1 + 2][col1]))) {
 			System.out.println(piece2.getRow() + " " + piece2.getCol()
 					+ "2 lower");
 			return true;
-		} else if ((row1 + 1 < rows && row1 - 1 >= 0)
+		} else if ((row1 + 1 < ROWS && row1 - 1 >= 0)
 				&& piece2.getId() == grid[row1 + 1][col1].getId()
 				&& (!piece2.equals(grid[row1 + 1][col1]))
 				&& piece2.getId() == grid[row1 - 1][col1].getId()
@@ -301,14 +292,14 @@ public class GridPanel extends JPanel {
 	}
 
 	private boolean checkHorizontal(int row1, int col1, ShapeLabel piece2) {
-		if (col1 + 2 < cols && piece2.getId() == grid[row1][col1 + 1].getId()
+		if (col1 + 2 < COLS && piece2.getId() == grid[row1][col1 + 1].getId()
 				&& (!piece2.equals(grid[row1][col1 + 1]))
 				&& piece2.getId() == grid[row1][col1 + 2].getId()
 				&& (!piece2.equals(grid[row1][col1 + 2]))) {
 			System.out.println(piece2.getRow() + " " + piece2.getCol()
 					+ "2 right");
 			return true;
-		} else if ((col1 + 1 < cols && col1 - 1 >= 0)
+		} else if ((col1 + 1 < COLS && col1 - 1 >= 0)
 				&& piece2.getId() == grid[row1][col1 + 1].getId()
 				&& (!piece2.equals(grid[row1][col1 + 1]))
 				&& piece2.getId() == grid[row1][col1 - 1].getId()
@@ -329,8 +320,8 @@ public class GridPanel extends JPanel {
 	}
 
 	private boolean validSwapLocation() {
-		if (((this.enteredRow == pressedRow + 1 || this.enteredRow == pressedRow - 1) && this.enteredCol == pressedCol)
-				|| ((this.enteredCol == pressedCol + 1 || this.enteredCol == this.pressedCol - 1) && this.enteredRow == this.pressedRow)) {
+		if (((enteredRow == pressedRow + 1 || enteredRow == pressedRow - 1) && enteredCol == pressedCol)
+				|| ((enteredCol == pressedCol + 1 || enteredCol == pressedCol - 1) && enteredRow == pressedRow)) {
 			return true;
 		}
 
