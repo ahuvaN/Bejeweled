@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class GridPanel extends JPanel {
@@ -18,7 +19,6 @@ public class GridPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private ShapeLabel[][] grid;
-	//private Color navyBlue;
 	// queue may be unnecessary
 	private int shapeNum;
 	private Random random;
@@ -37,10 +37,9 @@ public class GridPanel extends JPanel {
 
 	public GridPanel() {
 		setLayout(new GridLayout(rows, cols));
-		setBackground(new Color(0,0,0,99));
+		setBackground(new Color(0,0,0,150));
+		setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.black));
 		this.random = new Random();
-		//this.navyBlue = new Color(76, 0, 153);
-		//setBackground(navyBlue);
 		this.grid = new ShapeLabel[rows][cols];
 		shapes = new ShapeLabel[] { new ShapeLabel("/purple.png", 0, -1, -1),
 				new ShapeLabel("/blue.png", 1, -1, -1),
@@ -93,28 +92,26 @@ public class GridPanel extends JPanel {
 		this.shapeNum = random.nextInt(7);
 		switch (shapeNum) {
 		case 0:
-			return new ShapeLabel(shapes[0].getIconPic(), shapes[0].getId(),
-					row, col);
+			return getLabel(0, row, col);
 		case 1:
-			return new ShapeLabel(shapes[1].getIconPic(), shapes[1].getId(),
-					row, col);
+			return getLabel(1, row, col);
 		case 2:
-			return new ShapeLabel(shapes[2].getIconPic(), shapes[2].getId(),
-					row, col);
+			return getLabel(2, row, col);
 		case 3:
-			return new ShapeLabel(shapes[3].getIconPic(), shapes[3].getId(),
-					row, col);
+			return getLabel(3, row, col);
 		case 4:
-			return new ShapeLabel(shapes[4].getIconPic(), shapes[4].getId(),
-					row, col);
+			return getLabel(4, row, col);
 		case 5:
-			return new ShapeLabel(shapes[5].getIconPic(), shapes[5].getId(),
-					row, col);
+			return getLabel(5, row, col);
 		case 6:
-			return new ShapeLabel(shapes[6].getIconPic(), shapes[6].getId(),
-					row, col);
+			return getLabel(6, row, col);
 		}
 		return null;
+	}
+	
+	private ShapeLabel getLabel(int num, int row, int col){
+		return new ShapeLabel(shapes[num].getIconPic(), shapes[num].getId(),
+				row, col);
 	}
 
 	public void checkForMultiples() {
@@ -243,12 +240,7 @@ public class GridPanel extends JPanel {
 					&& swapAllowed()) {
 				swap();
 				checkAgain = false;
-				try {
-					Thread.sleep(4000L);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				
 				do {
 					checkAgain = false;
 					checkForMultiples();
