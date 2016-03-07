@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
+
 import javax.swing.JPanel;
 
 public class GridPanel extends JPanel {
@@ -17,7 +18,7 @@ public class GridPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private ShapeLabel[][] grid;
-	private Color navyBlue;
+	//private Color navyBlue;
 	// queue may be unnecessary
 	private int shapeNum;
 	private Random random;
@@ -36,9 +37,10 @@ public class GridPanel extends JPanel {
 
 	public GridPanel() {
 		setLayout(new GridLayout(rows, cols));
+		setBackground(new Color(0,0,0,99));
 		this.random = new Random();
-		this.navyBlue = new Color(76, 0, 153);
-		setBackground(navyBlue);
+		//this.navyBlue = new Color(76, 0, 153);
+		//setBackground(navyBlue);
 		this.grid = new ShapeLabel[rows][cols];
 		shapes = new ShapeLabel[] { new ShapeLabel("/purple.png", 0, -1, -1),
 				new ShapeLabel("/blue.png", 1, -1, -1),
@@ -181,7 +183,7 @@ public class GridPanel extends JPanel {
 		int rowD = shapeLabel.getRow();
 		int colD = shapeLabel.getCol();
 		for (int i = colD; i > colD - count; i--) {
-			deletePeice(grid[rowD][i]);
+			deletePiece(grid[rowD][i]);
 		}
 	}
 
@@ -190,11 +192,11 @@ public class GridPanel extends JPanel {
 		int colD = shapeLabel.getCol();
 		for (int i = rowD - count + 1; i <= rowD; i++) {
 			System.out.println(i + " delete " + colD);
-			deletePeice(grid[i][colD]);
+			deletePiece(grid[i][colD]);
 		}
 	}
 
-	private void deletePeice(ShapeLabel peice) {
+	private void deletePiece(ShapeLabel peice) {
 		int pRow = peice.getRow();
 		int pCol = peice.getCol();
 		System.out.println(pRow + " " + pCol);
@@ -241,6 +243,12 @@ public class GridPanel extends JPanel {
 					&& swapAllowed()) {
 				swap();
 				checkAgain = false;
+				try {
+					Thread.sleep(4000L);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				do {
 					checkAgain = false;
 					checkForMultiples();
