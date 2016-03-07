@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
 
+import javax.swing.BorderFactory;
+
 import javax.swing.JPanel;
 
 public class GridPanel extends JPanel {
@@ -18,7 +20,6 @@ public class GridPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private ShapeLabel[][] grid;
-	private Color navyBlue;
 	// queue may be unnecessary
 	private int shapeNum;
 	private Random random;
@@ -37,9 +38,10 @@ public class GridPanel extends JPanel {
 
 	public GridPanel() {
 		setLayout(new GridLayout(rows, cols));
+		setBackground(new Color(0, 0, 0, 150));
+		// setBackground(Color.BLUE);
+		setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
 		this.random = new Random();
-		this.navyBlue = new Color(76, 0, 153);
-		setBackground(navyBlue);
 		this.grid = new ShapeLabel[rows][cols];
 		shapes = new ShapeLabel[] { new ShapeLabel("/purple.png", 0, -1, -1),
 				new ShapeLabel("/blue.png", 1, -1, -1),
@@ -48,11 +50,11 @@ public class GridPanel extends JPanel {
 				new ShapeLabel("/red.png", 4, -1, -1),
 				new ShapeLabel("/white.png", 5, -1, -1),
 				new ShapeLabel("/yellow.png", 6, -1, -1) };
+		mouseClicked = false;
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
 				grid[row][col] = getNextShape(row, col);
 				add(grid[row][col]);
-				mouseClicked = false;
 				grid[row][col].addMouseListener(listener);
 			}
 		}
@@ -63,6 +65,7 @@ public class GridPanel extends JPanel {
 			this.checkAgain = false;
 			checkForMultiples();
 		} while (checkAgain);
+
 		showBoard();
 
 	}
@@ -85,41 +88,37 @@ public class GridPanel extends JPanel {
 			}
 			System.out.println();
 		}
-
 	}
 
 	private ShapeLabel getNextShape(int row, int col) {
 		this.shapeNum = random.nextInt(7);
 		switch (shapeNum) {
 		case 0:
-			return new ShapeLabel(shapes[0].getIconPic(), shapes[0].getId(),
-					row, col);
+			return getLabel(0, row, col);
 		case 1:
-			return new ShapeLabel(shapes[1].getIconPic(), shapes[1].getId(),
-					row, col);
+			return getLabel(1, row, col);
 		case 2:
-			return new ShapeLabel(shapes[2].getIconPic(), shapes[2].getId(),
-					row, col);
+			return getLabel(2, row, col);
 		case 3:
-			return new ShapeLabel(shapes[3].getIconPic(), shapes[3].getId(),
-					row, col);
+			return getLabel(3, row, col);
 		case 4:
-			return new ShapeLabel(shapes[4].getIconPic(), shapes[4].getId(),
-					row, col);
+			return getLabel(4, row, col);
 		case 5:
-			return new ShapeLabel(shapes[5].getIconPic(), shapes[5].getId(),
-					row, col);
+			return getLabel(5, row, col);
 		case 6:
-			return new ShapeLabel(shapes[6].getIconPic(), shapes[6].getId(),
-					row, col);
+			return getLabel(6, row, col);
 		}
 		return null;
+	}
+
+	private ShapeLabel getLabel(int num, int row, int col) {
+		return new ShapeLabel(shapes[num].getIconPic(), shapes[num].getId(),
+				row, col);
 	}
 
 	public void checkForMultiples() {
 		checkBoardVerticalMatches();
 		checkBoardHorizontalMatches();
-
 	}
 
 	private void checkBoardVerticalMatches() {
@@ -181,7 +180,7 @@ public class GridPanel extends JPanel {
 		int rowD = shapeLabel.getRow();
 		int colD = shapeLabel.getCol();
 		for (int i = colD; i > colD - count; i--) {
-			deletePeice(grid[rowD][i]);
+			deletePiece(grid[rowD][i]);
 		}
 	}
 
@@ -190,13 +189,13 @@ public class GridPanel extends JPanel {
 		int colD = shapeLabel.getCol();
 		for (int i = rowD - count + 1; i <= rowD; i++) {
 			System.out.println(i + " delete " + colD);
-			deletePeice(grid[i][colD]);
+			deletePiece(grid[i][colD]);
 		}
 	}
 
-	private void deletePeice(ShapeLabel peice) {
-		int pRow = peice.getRow();
-		int pCol = peice.getCol();
+	private void deletePiece(ShapeLabel piece) {
+		int pRow = piece.getRow();
+		int pCol = piece.getCol();
 		System.out.println(pRow + " " + pCol);
 		while (pRow > 0) {
 			grid[pRow][pCol].setIconPic(grid[pRow - 1][pCol].getIconPic());
@@ -240,7 +239,6 @@ public class GridPanel extends JPanel {
 			if (!(enteredRow == pressedRow && enteredCol == pressedCol)
 					&& swapAllowed()) {
 				swap();
-				
 				checkAgain = false;
 				do {
 					checkAgain = false;
@@ -249,7 +247,6 @@ public class GridPanel extends JPanel {
 
 			}
 		}
-
 	};
 
 	private boolean swapAllowed() {
