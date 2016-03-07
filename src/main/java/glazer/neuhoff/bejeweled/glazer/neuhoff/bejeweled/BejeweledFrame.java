@@ -12,34 +12,31 @@ import javax.swing.JPanel;
 public class BejeweledFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private Container container;
 
+	private Container container;
 	private ImageIcon frameIcon;
 	private Image img;
 	private GridPanel gridPanel;
 	private ScorePanel westPanel;
-	//private Container panel;
 
 	public BejeweledFrame() {
 		setSize(850, 700);
 		setTitle("BEJEWELED");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setContentPane(new JLabel(new ImageIcon(getClass().getResource("/background1.jpg"))));
-		this.frameIcon = new ImageIcon(getClass().getResource("/GameIcon.jpg"));
-		this.img = frameIcon.getImage().getScaledInstance(250, 250,
+		setContentPane(new JLabel(new ImageIcon(getClass().getResource(
+				"/background1.jpg"))));
+		frameIcon = new ImageIcon(getClass().getResource("/GameIcon.jpg"));
+		img = frameIcon.getImage().getScaledInstance(250, 250,
 				java.awt.Image.SCALE_SMOOTH);
 		setIconImage(img);
+		
 		container = getContentPane();
-		//panel = new JPanel();
-
 		container.setLayout(new BorderLayout());
-		//panel.setLayout(new BorderLayout());
-		this.gridPanel = new GridPanel();
-		this.container.add(this.gridPanel, BorderLayout.CENTER);
-		//panel.add(this.gridPanel, BorderLayout.CENTER);
-		this.westPanel = new ScorePanel();
-		this.container.add(this.westPanel, BorderLayout.WEST);
-		//panel.add(this.westPanel, BorderLayout.WEST);
+		westPanel = new ScorePanel();
+		container.add(westPanel, BorderLayout.WEST);
+		gridPanel = new GridPanel(westPanel);
+		container.add(gridPanel, BorderLayout.CENTER);
+		
 	}
 
 	public static void main(String[] args) {

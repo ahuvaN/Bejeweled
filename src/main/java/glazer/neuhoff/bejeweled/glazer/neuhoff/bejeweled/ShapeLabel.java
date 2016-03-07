@@ -8,18 +8,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class ShapeLabel extends JLabel {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
-	private int id;
+	
+	private int id, row, col;
 	private ImageIcon iconPic;
 	private Cursor cursor;
-	private int row;
-	private int col;
 
 	public ShapeLabel(String iconFileName, int id, int row, int col) {
-		this.iconPic = new ImageIcon(getClass().getResource(iconFileName));
+		iconPic = new ImageIcon(getClass().getResource(iconFileName));
 		setIcon(iconPic);
 		setCursor();
 		this.id = id;
