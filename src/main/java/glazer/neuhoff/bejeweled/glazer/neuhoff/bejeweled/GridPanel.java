@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
+
 import javax.swing.JPanel;
 
 public class GridPanel extends JPanel {
@@ -177,7 +178,6 @@ public class GridPanel extends JPanel {
 	}
 
 	private void deleteNextHorizontal(ShapeLabel shapeLabel, int count) {
-
 		int rowD = shapeLabel.getRow();
 		int colD = shapeLabel.getCol();
 		for (int i = colD; i > colD - count; i--) {
@@ -204,9 +204,9 @@ public class GridPanel extends JPanel {
 			pRow--;
 		}
 		ShapeLabel s = getNextShape(pRow, pCol);
-		//grid[0][pCol] = s;
-	grid[0][pCol].setIconPic(s.getIconPic());
-	grid[0][pCol].setId(s.getId());
+		// grid[0][pCol] = s;
+		grid[0][pCol].setIconPic(s.getIconPic());
+		grid[0][pCol].setId(s.getId());
 	}
 
 	MouseListener listener = new MouseListener() {
@@ -240,6 +240,7 @@ public class GridPanel extends JPanel {
 			if (!(enteredRow == pressedRow && enteredCol == pressedCol)
 					&& swapAllowed()) {
 				swap();
+				
 				checkAgain = false;
 				do {
 					checkAgain = false;
