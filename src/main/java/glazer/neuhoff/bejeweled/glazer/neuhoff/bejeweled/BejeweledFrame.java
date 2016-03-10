@@ -3,7 +3,11 @@ package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -14,8 +18,8 @@ public class BejeweledFrame extends JFrame {
 	private Container container;
 	private ImageIcon frameIcon;
 	private Image img;
-	private GridPanel gridPanel;
-	private ScorePanel westPanel;
+	private Game game;
+	private JButton newGame;
 
 	public BejeweledFrame() {
 		setSize(850, 700);
@@ -29,11 +33,18 @@ public class BejeweledFrame extends JFrame {
 		setIconImage(img);
 		container = getContentPane();
 		container.setLayout(new BorderLayout());
-		westPanel = new ScorePanel();
-		container.add(westPanel, BorderLayout.WEST);
-		gridPanel = new GridPanel(westPanel);
-		container.add(gridPanel, BorderLayout.CENTER);
+		this.game = new Game();
+		this.newGame = new JButton("NEW GAME");
+		ActionListener listener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
 
+				game.newGame();
+			}
+		};
+		this.newGame.addActionListener(listener);
+		this.container.add(this.newGame, BorderLayout.NORTH);
+		this.container.add(game, BorderLayout.CENTER);
 	}
 
 	public static void main(String[] args) {

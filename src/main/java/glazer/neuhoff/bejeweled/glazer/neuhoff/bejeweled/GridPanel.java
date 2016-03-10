@@ -6,9 +6,9 @@ import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
+import java.util.Stack;
 
 import javax.swing.BorderFactory;
-
 import javax.swing.JPanel;
 
 public class GridPanel extends JPanel {
@@ -19,7 +19,7 @@ public class GridPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private final int ROWS = 8, COLS = 8;
+	static final int ROWS = 8, COLS = 8;
 	private final Color backgroundColor = new Color(0, 0, 0, 150);
 	private Random random;
 	private ScorePanel scores;
@@ -47,13 +47,8 @@ public class GridPanel extends JPanel {
 				new ShapeLabel("/yellow.png", 6, -1, -1) };
 
 		mouseClicked = false;
-		for (int row = 0; row < ROWS; row++) {
-			for (int col = 0; col < COLS; col++) {
-				grid[row][col] = getNextShape(row, col);
-				add(grid[row][col]);
-				grid[row][col].addMouseListener(listener);
-			}
-		}
+		initializeGrid();
+		
 		mouseClicked = false;
 		checkAgain = false;
 		do {
@@ -63,6 +58,15 @@ public class GridPanel extends JPanel {
 		} while (checkAgain);
 		showBoard(); // console
 
+	}
+	private void initializeGrid(){
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				grid[row][col] = getNextShape(row, col);
+				add(grid[row][col]);
+				grid[row][col].addMouseListener(listener);
+			}
+		}
 	}
 
 	private void swap() {
@@ -110,14 +114,23 @@ public class GridPanel extends JPanel {
 		return new ShapeLabel(shapes[num].getIconPic(), shapes[num].getId(),
 				row, col);
 	}
-
+public ShapeLabel getJewelAt(int row, int column){
+return grid[row][column];
+}
 	public void checkForMultiples() {
 		checkBoardVerticalMatches();
 		checkBoardHorizontalMatches();
 	}
 
-	private void checkBoardVerticalMatches() {
-		// check vertical rows
+	
+		
+		
+		
+		
+		
+		
+		public void checkBoardVerticalMatches(){
+		
 		int count = 3;
 		int next;
 		boolean more = true;
@@ -327,5 +340,5 @@ public class GridPanel extends JPanel {
 
 		return false;
 
-	}
+	}	
 }
