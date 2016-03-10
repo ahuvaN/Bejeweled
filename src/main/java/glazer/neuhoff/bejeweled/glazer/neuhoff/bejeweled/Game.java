@@ -64,6 +64,7 @@ public class Game extends JComponent {
 				checkAgain = true;
 			}
 		} while (checkAgain);
+
 	}
 
 	public void increaseScore(int amount) {

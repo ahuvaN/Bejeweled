@@ -1,28 +1,21 @@
 package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.GridLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Stack;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class GridPanel extends JPanel {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	static final int ROWS = 8, COLS = 8;
 	private final Color backgroundColor = new Color(0, 0, 0, 150);
 	private Random random;
-	private ScorePanel scores;
 	private ShapeLabel[][] grid;
 	private ShapeLabel[] shapes;
 	private Game game;
@@ -106,24 +99,6 @@ public class GridPanel extends JPanel {
 		return grid[row][column];
 	}
 
-//	private void deleteNextHorizontal(ShapeLabel shapeLabel, int count) {
-//		int rowD = shapeLabel.getRow();
-//		int colD = shapeLabel.getCol();
-//		for (int i = colD; i > colD - count; i--) {
-//			deletePiece(grid[rowD][i]);
-//		}
-//		scores.setScore(10);
-//	}
-//
-//	private void deleteNextVertical(ShapeLabel shapeLabel, int count) {
-//		int rowD = shapeLabel.getRow();
-//		int colD = shapeLabel.getCol();
-//		for (int i = rowD - count + 1; i <= rowD; i++) {
-//			System.out.println(i + " delete " + colD);
-//			deletePiece(grid[i][colD]);
-//		}
-//		scores.setScore(10);
-//	}
 
 	private void deletePiece(ShapeLabel piece) {
 		int pRow = piece.getRow();
