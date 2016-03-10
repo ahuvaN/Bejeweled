@@ -19,7 +19,7 @@ import javax.swing.SwingConstants;
 public class ScorePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JLabel score;
+	private JLabel scoreLabel;
 	private JLabel scoreValue;
 
 	private boolean sound;
@@ -27,6 +27,7 @@ public class ScorePanel extends JPanel {
 	private ScheduledExecutorService executor2;
 	private MusicThread musicThread;
 	private JProgressBar bar;
+	private int score;
 
 	public ScorePanel() {
 		setBackground(new Color(0, 0, 0, 0));
@@ -34,9 +35,9 @@ public class ScorePanel extends JPanel {
 		JPanel scoreValues = new JPanel();
 		scoreValues.setLayout(new FlowLayout());
 		scoreValues.setBackground(new Color(0, 0, 0, 0));
-		this.score = new JLabel("SCORE:");
-		score = new JLabel("SCORE:");
-		score.setFont(new Font("Arial", Font.BOLD, 20));
+		this.scoreLabel = new JLabel("SCORE:");
+		scoreLabel = new JLabel("SCORE:");
+		scoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
 		this.scoreValue = new JLabel("0");
 		scoreValue = new JLabel("0");
 		scoreValue.setFont(new Font("Arial", Font.BOLD, 20));
@@ -51,8 +52,8 @@ public class ScorePanel extends JPanel {
 		this.musicThread = new MusicThread();
 		this.executor2 = Executors.newScheduledThreadPool(1);
 		this.executor2.scheduleAtFixedRate(playSound, 0, 66, TimeUnit.SECONDS);
-
-		scoreValues.add(score);
+		this.score = 0;
+		scoreValues.add(scoreLabel);
 		scoreValues.add(scoreValue);
 		add(scoreValues);
 		add(bar);
@@ -60,14 +61,9 @@ public class ScorePanel extends JPanel {
 	}
 
 	public void setScore(int value) {
-		// if we can set score like we did in android pi calculation
-		// maybe also create a status bar of points until goal/game end
-		String val = scoreValue.getText();
-		int score = Integer.parseInt(val);
 		score += value;
-		scoreValue.setText(String.valueOf(score));
+		scoreLabel.setText(String.valueOf(score));
 		bar.setValue(score);
-
 	}
 
 	Runnable playSound = new Runnable() {
