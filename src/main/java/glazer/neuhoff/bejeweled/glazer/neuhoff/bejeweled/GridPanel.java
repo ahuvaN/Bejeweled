@@ -2,6 +2,8 @@ package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,7 +12,6 @@ import javax.swing.JPanel;
 
 public class GridPanel extends JPanel {
 
-	
 	private static final long serialVersionUID = 1L;
 
 	static final int ROWS = 8, COLS = 8;
@@ -26,33 +27,35 @@ public class GridPanel extends JPanel {
 		// setBackground(Color.BLUE);
 		setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
 		this.random = new Random();
-		this.game=game;
+		this.game = game;
 		this.grid = new ShapeLabel[ROWS][COLS];
 		random = new Random();
-		shapes = new ShapeLabel[] { new ShapeLabel("/purple.png", 0, -1, -1, game),
-				new ShapeLabel("/blue.png", 1, -1, -1, game),
-				new ShapeLabel("/green.png", 2, -1, -1,game),
-				new ShapeLabel("/orange.png", 3, -1, -1,game),
-				new ShapeLabel("/red.png", 4, -1, -1,game),
-				new ShapeLabel("/white.png", 5, -1, -1,game),
-				new ShapeLabel("/yellow.png", 6, -1, -1,game) };
+		shapes = new ShapeLabel[] { new ShapeLabel("/purple.png", 0, -1, -1),
+				new ShapeLabel("/blue.png", 1, -1, -1),
+				new ShapeLabel("/green.png", 2, -1, -1),
+				new ShapeLabel("/orange.png", 3, -1, -1),
+				new ShapeLabel("/red.png", 4, -1, -1),
+				new ShapeLabel("/white.png", 5, -1, -1),
+				new ShapeLabel("/yellow.png", 6, -1, -1) };
+
 		initializeGrid();
+		// game.checkMatches();
 	}
 
 	private void initializeGrid() {
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
 				grid[row][col] = getNextShape(row, col);
+				grid[row][col].addMouseListener(listener);
 				add(grid[row][col]);
-				
+
 			}
 		}
-		//game.checkMatches();
 	}
 
 	public void swap(ShapeLabel label1, ShapeLabel label2) {
-		ShapeLabel swapLabel = new ShapeLabel(label1.getIconPic(), label1.getId(),
-				label1.getRow(), label1.getCol(),game);
+		ShapeLabel swapLabel = new ShapeLabel(label1.getIconPic(),
+				label1.getId(), label1.getRow(), label1.getCol());
 		label1.setIconPic(label2.getIconPic());
 		label1.setId(label2.getId());
 		label2.setIconPic(swapLabel.getIconPic());
@@ -92,13 +95,12 @@ public class GridPanel extends JPanel {
 
 	private ShapeLabel getLabel(int num, int row, int col) {
 		return new ShapeLabel(shapes[num].getIconPic(), shapes[num].getId(),
-				row, col,game);
+				row, col);
 	}
 
 	public ShapeLabel getJewelAt(int row, int column) {
 		return grid[row][column];
 	}
-
 
 	private void deletePiece(ShapeLabel piece) {
 		int pRow = piece.getRow();
@@ -117,13 +119,43 @@ public class GridPanel extends JPanel {
 
 	public void deleteMatches(ArrayList<ArrayList<ShapeLabel>> deletions) {
 		// TODO Auto-generated method stub
-		for (ArrayList<ShapeLabel> match: deletions){
-			game.increaseScore(match.size()*10);
-	           for (ShapeLabel jewel: match){
-	               deletePiece(jewel);
-	           }
-	           
-	       }  
+		for (ArrayList<ShapeLabel> match : deletions) {
+			game.increaseScore(match.size() * 10);
+			for (ShapeLabel jewel : match) {
+				deletePiece(jewel);
+			}
+
+		}
 	}
 
+	private ShapeLabel enteredLabel;
+	private ShapeLabel pressedLabel;
+	private boolean mouseClicked;
+	MouseListener listener = new MouseListener() {
+
+		public void mouseClicked(MouseEvent e) {
+		}
+
+		public void mouseEntered(MouseEvent e2) {
+			if (mouseClicked) {
+				enteredLabel = (ShapeLabel) e2.getComponent();
+			}
+		}
+
+		public void mouseExited(MouseEvent e) {
+
+		}
+
+		public void mousePressed(MouseEvent e) {
+			mouseClicked = true;
+			pressedLabel = (ShapeLabel) e.getComponent();
+			enteredLabel = (ShapeLabel) e.getComponent();
+			game.jewelClicked(pressedLabel);
+		}
+
+		public void mouseReleased(MouseEvent e) {
+			mouseClicked = false;
+			game.jewelReleased(pressedLabel, enteredLabel);
+		}
+	};
 }

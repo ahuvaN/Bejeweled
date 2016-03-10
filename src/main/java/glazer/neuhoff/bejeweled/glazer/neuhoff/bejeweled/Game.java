@@ -18,10 +18,9 @@ public class Game extends JComponent {
 	public Game() {
 		setLayout(new BorderLayout());
 		newGame();
-		add(scorePanel,BorderLayout.WEST);
+		add(scorePanel, BorderLayout.WEST);
 		add(grid, BorderLayout.CENTER);
-		
-		
+
 	}
 
 	public void newGame() {
@@ -38,6 +37,7 @@ public class Game extends JComponent {
 		setGridCursor(Cursor.getDefaultCursor());
 		if (!pressedLabel.equals(enteredLabel)) {
 			tryJewelSwap(pressedLabel, enteredLabel);
+			System.out.println("hereto");
 		}
 	}
 
@@ -57,10 +57,13 @@ public class Game extends JComponent {
 		// TODO Auto-generated method stub
 		boolean checkAgain = false;
 		do {
+			checkAgain = false;
 			ArrayList<ArrayList<ShapeLabel>> deletions = new ArrayList<ArrayList<ShapeLabel>>();
-			int del= methods.checkBoard();
-			if (deletions!=null) {
+			deletions = methods.checkBoard();
+			if (deletions != null) {
 				grid.deleteMatches(deletions);
+				System.out.println("delete");
+
 				checkAgain = true;
 			}
 		} while (checkAgain);
