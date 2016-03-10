@@ -33,18 +33,18 @@ public class BejeweledFrame extends JFrame {
 		setIconImage(img);
 		container = getContentPane();
 		container.setLayout(new BorderLayout());
-		this.game = new Game();
 		this.newGame = new JButton("NEW GAME");
+		
+		game = new Game();
+		container.add(game, BorderLayout.CENTER);
+		
 		ActionListener listener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
 				game.newGame();
 			}
 		};
 		this.newGame.addActionListener(listener);
 		this.container.add(this.newGame, BorderLayout.NORTH);
-		this.container.add(game, BorderLayout.CENTER);
 	}
 
 	public static void main(String[] args) {
