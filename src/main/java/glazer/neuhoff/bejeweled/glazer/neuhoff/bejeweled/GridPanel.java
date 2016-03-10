@@ -48,7 +48,7 @@ public class GridPanel extends JPanel {
 
 		mouseClicked = false;
 		initializeGrid();
-		
+
 		mouseClicked = false;
 		checkAgain = false;
 		do {
@@ -59,7 +59,8 @@ public class GridPanel extends JPanel {
 		showBoard(); // console
 
 	}
-	private void initializeGrid(){
+
+	private void initializeGrid() {
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
 				grid[row][col] = getNextShape(row, col);
@@ -114,23 +115,18 @@ public class GridPanel extends JPanel {
 		return new ShapeLabel(shapes[num].getIconPic(), shapes[num].getId(),
 				row, col);
 	}
-public ShapeLabel getJewelAt(int row, int column){
-return grid[row][column];
-}
+
+	public ShapeLabel getJewelAt(int row, int column) {
+		return grid[row][column];
+	}
+
 	public void checkForMultiples() {
 		checkBoardVerticalMatches();
 		checkBoardHorizontalMatches();
 	}
 
-	
-		
-		
-		
-		
-		
-		
-		public void checkBoardVerticalMatches(){
-		
+	public void checkBoardVerticalMatches() {
+
 		int count = 3;
 		int next;
 		boolean more = true;
@@ -340,5 +336,5 @@ return grid[row][column];
 
 		return false;
 
-	}	
+	}
 }
