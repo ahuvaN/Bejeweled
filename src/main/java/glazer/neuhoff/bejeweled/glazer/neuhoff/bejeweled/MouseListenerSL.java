@@ -4,21 +4,23 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.event.MouseInputAdapter;
 
-public class MouseListener extends MouseInputAdapter {
+public class MouseListenerSL extends MouseInputAdapter {
 
 	ShapeLabel enteredLabel;
 	ShapeLabel pressedLabel;
 	boolean mouseClicked;
 	private Game game;
 
-	public MouseListener(Game game) {
+	public MouseListenerSL(Game game) {
 		this.game = game;
 	}
 
 	public void mouseClicked(MouseEvent e) {
+		mouseClicked=true;
 	}
 
 	public void mouseEntered(MouseEvent e2) {
+		System.out.println(e2.getComponent());
 		if (mouseClicked) {
 			enteredLabel = (ShapeLabel) e2.getComponent();
 		}

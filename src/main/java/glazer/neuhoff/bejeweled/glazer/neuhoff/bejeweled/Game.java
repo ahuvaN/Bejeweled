@@ -1,7 +1,9 @@
 package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
 
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.util.ArrayList;
+
 import javax.swing.JComponent;
 
 public class Game extends JComponent {
@@ -14,8 +16,12 @@ public class Game extends JComponent {
 	private ScorePanel scorePanel;
 
 	public Game() {
-		this.addMouseListener(new MouseListener(this));
+		setLayout(new BorderLayout());
 		newGame();
+		add(scorePanel,BorderLayout.WEST);
+		add(grid, BorderLayout.CENTER);
+		
+		
 	}
 
 	public void newGame() {
@@ -51,9 +57,9 @@ public class Game extends JComponent {
 		// TODO Auto-generated method stub
 		boolean checkAgain = false;
 		do {
-			ArrayList<ArrayList<ShapeLabel>> deletions = methods.checkBoard();
-		
-			if (!deletions.isEmpty()) {
+			ArrayList<ArrayList<ShapeLabel>> deletions = new ArrayList<ArrayList<ShapeLabel>>();
+			int del= methods.checkBoard();
+			if (deletions!=null) {
 				grid.deleteMatches(deletions);
 				checkAgain = true;
 			}

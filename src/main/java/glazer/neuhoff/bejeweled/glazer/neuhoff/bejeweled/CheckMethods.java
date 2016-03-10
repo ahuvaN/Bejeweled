@@ -90,12 +90,20 @@ public class CheckMethods {
 		return false;
 	}
 
-	public ArrayList<ArrayList<ShapeLabel>> checkBoard() {
+	public int checkBoard() {
 		this.matches = new ArrayList<ArrayList<ShapeLabel>>();
 		checkVertical();
 		checkHorizontal();
-		
-		return matches;
+		System.out.println("here");
+		if(matches.size()==0){
+			
+		System.out.println(matches.size());
+		}
+		if(matches.isEmpty()){
+			System.out.println("empty");
+			//return null;
+		}
+		return matches.size();
 	}
 
 	private void checkHorizontal() {
