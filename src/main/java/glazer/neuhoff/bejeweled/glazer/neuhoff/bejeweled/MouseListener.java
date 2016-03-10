@@ -1,6 +1,5 @@
 package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
 
-import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 
 import javax.swing.event.MouseInputAdapter;
@@ -37,9 +36,6 @@ public class MouseListener extends MouseInputAdapter {
 
 	public void mouseReleased(MouseEvent e) {
 		mouseClicked = false;
-		game.setGridCursor(Cursor.getDefaultCursor());
-		if (!this.pressedLabel.equals(this.enteredLabel)) {
-			game.tryJewelSwap();
-		}
+		game.jewelReleased(this.pressedLabel, this.enteredLabel);
 	}
 }
