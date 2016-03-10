@@ -4,9 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.util.ArrayList;
 
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 
-public class Game extends JComponent {
+public class Game extends JPanel {
 	/**
 	 * 
 	 */
@@ -16,33 +16,29 @@ public class Game extends JComponent {
 	private ScorePanel scorePanel;
 
 	public Game() {
-		this.addMouseListener(new MouseListener(this));
-		newGame();
-	}
-
-	public void newGame() {
+		addMouseListener(new MouseListener(this));
 		setLayout(new BorderLayout());
-		this.grid = new GridPanel(this);
-		this.methods = new CheckMethods(grid);
-		this.scorePanel = new ScorePanel();
-		this.add(grid, BorderLayout.CENTER);
-		this.add(scorePanel, BorderLayout.WEST);
+		grid = new GridPanel(this);
+		methods = new CheckMethods(grid);
+		scorePanel = new ScorePanel();
+		add(grid, BorderLayout.CENTER);
+		add(scorePanel, BorderLayout.WEST);
 	}
 
 	public void jewelClicked(ShapeLabel pressedLabel) {
-		setGridCursor(pressedLabel.getCursor());
+		setCursor(pressedLabel.getCursor());
 	}
 
 	public void jewelReleased(ShapeLabel pressedLabel, ShapeLabel enteredLabel) {
-		setGridCursor(Cursor.getDefaultCursor());
+		setCursor(Cursor.getDefaultCursor());
 		if (!pressedLabel.equals(enteredLabel)) {
 			tryJewelSwap(pressedLabel, enteredLabel);
 		}
 	}
 
-	public void setGridCursor(Cursor cursor) {
-		setCursor(cursor);
-	}
+	//public void setGridCursor(Cursor cursor) {
+		//setCursor(cursor);
+	//}
 
 	public void tryJewelSwap(ShapeLabel pressedLabel, ShapeLabel enteredLabel) {
 		if (methods.isValidSwap(pressedLabel, enteredLabel)) {

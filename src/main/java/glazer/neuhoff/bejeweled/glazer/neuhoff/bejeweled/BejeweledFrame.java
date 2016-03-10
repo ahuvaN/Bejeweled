@@ -40,7 +40,7 @@ public class BejeweledFrame extends JFrame {
 		
 		ActionListener listener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.newGame();
+				game = new Game();
 			}
 		};
 		this.newGame.addActionListener(listener);
