@@ -8,7 +8,6 @@ public class CheckMethods {
 
 	public CheckMethods(GridPanel gridPanel) {
 		this.grid = gridPanel;
-		this.matches = new ArrayList<ArrayList<ShapeLabel>>();
 	}
 
 	public boolean isValidSwap(ShapeLabel pressedLabel, ShapeLabel enteredLabel) {
@@ -94,8 +93,16 @@ public class CheckMethods {
 		this.matches = new ArrayList<ArrayList<ShapeLabel>>();
 		checkVertical();
 		checkHorizontal();
-		
+		if(matches.size()==0){
+			
+		System.out.println(matches.size());
+		}
+		if(matches.isEmpty()){
+			System.out.println("empty");
+			return null;
+		}
 		return matches;
+		
 	}
 
 	private void checkHorizontal() {

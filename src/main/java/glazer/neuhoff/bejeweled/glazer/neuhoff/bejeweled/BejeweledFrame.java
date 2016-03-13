@@ -38,13 +38,13 @@ public class BejeweledFrame extends JFrame {
 		game = new Game();
 		container.add(game, BorderLayout.CENTER);
 		
-		ActionListener listener = new ActionListener() {
+		/*ActionListener listener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game = new Game();
 			}
 		};
 		this.newGame.addActionListener(listener);
-		this.container.add(this.newGame, BorderLayout.NORTH);
+		this.container.add(newGame, BorderLayout.NORTH);*/
 	}
 
 	public static void main(String[] args) {

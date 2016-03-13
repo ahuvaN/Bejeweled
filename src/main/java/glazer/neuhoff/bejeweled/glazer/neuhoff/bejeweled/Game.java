@@ -1,6 +1,7 @@
 package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.util.ArrayList;
 
@@ -14,9 +15,11 @@ public class Game extends JPanel {
 	private CheckMethods methods;
 	private GridPanel grid;
 	private ScorePanel scorePanel;
+	private final Color backgroundColor = new Color(0, 0, 0, 150);
+
 
 	public Game() {
-		addMouseListener(new MouseListener(this));
+		setBackground(backgroundColor);
 		setLayout(new BorderLayout());
 		grid = new GridPanel(this);
 		methods = new CheckMethods(grid);
@@ -25,6 +28,7 @@ public class Game extends JPanel {
 		add(scorePanel, BorderLayout.WEST);
 	}
 
+	// change to animate the switch instead of cursor
 	public void jewelClicked(ShapeLabel pressedLabel) {
 		setCursor(pressedLabel.getCursor());
 	}
@@ -36,10 +40,6 @@ public class Game extends JPanel {
 		}
 	}
 
-	//public void setGridCursor(Cursor cursor) {
-		//setCursor(cursor);
-	//}
-
 	public void tryJewelSwap(ShapeLabel pressedLabel, ShapeLabel enteredLabel) {
 		if (methods.isValidSwap(pressedLabel, enteredLabel)) {
 			grid.swap(pressedLabel, enteredLabel);
@@ -49,21 +49,15 @@ public class Game extends JPanel {
 	}
 
 	public void checkMatches() {
-		// TODO Auto-generated method stub
 		boolean checkAgain = false;
-		try {
-			do {
-				ArrayList<ArrayList<ShapeLabel>> deletions = methods
-						.checkBoard();
+		do {
+			ArrayList<ArrayList<ShapeLabel>> deletions = methods.checkBoard();
 
-				if (!deletions.isEmpty()) {
-					grid.deleteMatches(deletions);
-					checkAgain = true;
-				}
-			} while (checkAgain);
-		} catch (Exception ex) {
-			System.out.println("Invalid or no matches to delete.");
-		}
+			if (!deletions.isEmpty()) {
+				grid.deleteMatches(deletions);
+				checkAgain = true;
+			}
+		} while (checkAgain);
 	}
 
 	public void increaseScore(int amount) {

@@ -14,8 +14,9 @@ public class ShapeLabel extends JLabel {
 	private int id, row, col;
 	private ImageIcon iconPic;
 	private Cursor cursor;
+	private Game game;
 
-	public ShapeLabel(String iconFileName, int id, int row, int col) {
+	public ShapeLabel(String iconFileName, int id, int row, int col, Game game) {
 		iconPic = new ImageIcon(getClass().getResource(iconFileName));
 		setIcon(iconPic);
 		setCursor();
@@ -25,7 +26,7 @@ public class ShapeLabel extends JLabel {
 
 	}
 
-	public ShapeLabel(ImageIcon icon, int id, int row, int col) {
+	public ShapeLabel(ImageIcon icon, int id, int row, int col, Game game) {
 		this.iconPic = icon;
 		setIcon(this.iconPic);
 		setCursor();

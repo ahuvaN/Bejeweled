@@ -19,9 +19,7 @@ import javax.swing.SwingConstants;
 public class ScorePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JLabel scoreLabel;
-	private JLabel scoreValue;
-
+	private JLabel scoreLabel, scoreValue;
 	private boolean sound;
 	private JCheckBoxMenuItem mute;
 	private ScheduledExecutorService executor2;
@@ -35,7 +33,6 @@ public class ScorePanel extends JPanel {
 		JPanel scoreValues = new JPanel();
 		scoreValues.setLayout(new FlowLayout());
 		scoreValues.setBackground(new Color(0, 0, 0, 0));
-		this.scoreLabel = new JLabel("SCORE:");
 		scoreLabel = new JLabel("SCORE:");
 		scoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
 		this.scoreValue = new JLabel("0");
