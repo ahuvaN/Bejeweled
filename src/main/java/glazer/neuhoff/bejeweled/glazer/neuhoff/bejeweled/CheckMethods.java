@@ -97,7 +97,6 @@ public class CheckMethods {
 		System.out.println(matches.size());
 		}
 		if(matches.isEmpty()){
-			System.out.println("empty");
 			return null;
 		}
 		return matches;
@@ -153,6 +152,11 @@ public class CheckMethods {
 				c = temp - 1;
 			}
 		}
+	}
+
+	public void setNewGrid(GridPanel grid2) {
+		// TODO Auto-generated method stub
+		this.grid=grid2;
 	}
 
 }

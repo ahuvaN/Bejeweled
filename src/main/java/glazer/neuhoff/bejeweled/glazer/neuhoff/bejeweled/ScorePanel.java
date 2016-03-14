@@ -6,9 +6,12 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import javax.swing.JCheckBoxMenuItem;
+
 import java.awt.FlowLayout;
 import java.awt.Font;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -25,15 +28,24 @@ public class ScorePanel extends JPanel {
 	private ScheduledExecutorService executor2;
 	private MusicThread musicThread;
 	private JProgressBar bar;
+	private JPanel scoreValues;
 	private int score;
+	private JLabel highScoreLabel;
+	private int highScore;
+	private JLabel highScoreText;
+	private JPanel highScoreValues;
 
 	public ScorePanel() {
 		setBackground(new Color(0, 0, 0, 0));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		JPanel scoreValues = new JPanel();
-		scoreValues.setLayout(new FlowLayout());
-		scoreValues.setBackground(new Color(0, 0, 0, 0));
-		scoreLabel = new JLabel("SCORE:");
+		this.scoreValues = new JPanel();
+		this.scoreValues.setLayout(new FlowLayout());
+		this.scoreValues.setBackground(new Color(0, 0, 0, 0));
+		this.highScoreValues = new JPanel();
+		this.highScoreValues.setLayout(new FlowLayout());
+		this.highScoreValues.setBackground(new Color(0, 0, 0, 0));
+		this.scoreLabel = new JLabel("SCORE:");
+		this.scoreLabel = new JLabel("SCORE:");
 		scoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
 		this.scoreValue = new JLabel("0");
 		scoreValue = new JLabel("0");
@@ -50,16 +62,22 @@ public class ScorePanel extends JPanel {
 		this.executor2 = Executors.newScheduledThreadPool(1);
 		this.executor2.scheduleAtFixedRate(playSound, 0, 66, TimeUnit.SECONDS);
 		this.score = 0;
-		scoreValues.add(scoreLabel);
-		scoreValues.add(scoreValue);
+		this.highScore = 0;
+		this.highScoreLabel = new JLabel("0");
+		this.highScoreText = new JLabel("HIGH SCORE:");
+		this.scoreValues.add(scoreLabel);
+		this.scoreValues.add(scoreValue);
+		this.highScoreValues.add(highScoreText);
+		this.highScoreValues.add(highScoreLabel);
 		add(scoreValues);
+		add(this.highScoreValues);
 		add(bar);
 		add(mute);
 	}
 
 	public void setScore(int value) {
 		score += value;
-		scoreLabel.setText(String.valueOf(score));
+		this.scoreValue.setText(String.valueOf(score));
 		bar.setValue(score);
 	}
 
@@ -88,4 +106,34 @@ public class ScorePanel extends JPanel {
 		}
 
 	};
+
+	public void setBarGoal() {
+		this.bar.setMaximum(highScore);
+	}
+
+	public void newGame() {
+		if (this.score > highScore) {
+			highScore = this.score;
+			resetHighScore(highScore);
+		}
+		this.score = 0;
+		this.scoreValue.setText(String.valueOf(score));
+		this.bar.setValue(0);
+	}
+
+	public void resetHighScore(int newHighScore) {
+		this.highScore = newHighScore;
+		this.highScoreLabel.setText(String.valueOf(this.highScore));
+		setBarGoal();
+	}
+
+	public Object getHighScore() {
+		return this.highScore;
+	}
+
+	public void endGame() {
+		if (this.score > highScore) {
+			highScore = this.score;
+		}
+	}
 }
