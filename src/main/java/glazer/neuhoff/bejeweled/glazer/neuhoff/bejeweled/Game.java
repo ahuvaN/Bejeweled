@@ -21,11 +21,16 @@ public class Game extends JPanel {
 	public Game() {
 		setBackground(backgroundColor);
 		setLayout(new BorderLayout());
+		newGame();
+		add(scorePanel, BorderLayout.WEST);
+		add(grid, BorderLayout.CENTER);
+
+	}
+
+	public void newGame() {
 		grid = new GridPanel(this);
 		methods = new CheckMethods(grid);
 		scorePanel = new ScorePanel();
-		add(grid, BorderLayout.CENTER);
-		add(scorePanel, BorderLayout.WEST);
 	}
 
 	// change to animate the switch instead of cursor
@@ -37,6 +42,7 @@ public class Game extends JPanel {
 		setCursor(Cursor.getDefaultCursor());
 		if (!pressedLabel.equals(enteredLabel)) {
 			tryJewelSwap(pressedLabel, enteredLabel);
+			System.out.println("hereto");
 		}
 	}
 
@@ -51,10 +57,13 @@ public class Game extends JPanel {
 	public void checkMatches() {
 		boolean checkAgain = false;
 		do {
-			ArrayList<ArrayList<ShapeLabel>> deletions = methods.checkBoard();
-
-			if (!deletions.isEmpty()) {
+			checkAgain = false;
+			ArrayList<ArrayList<ShapeLabel>> deletions = new ArrayList<ArrayList<ShapeLabel>>();
+			deletions = methods.checkBoard();
+			if (deletions != null) {
 				grid.deleteMatches(deletions);
+				System.out.println("delete");
+
 				checkAgain = true;
 			}
 		} while (checkAgain);

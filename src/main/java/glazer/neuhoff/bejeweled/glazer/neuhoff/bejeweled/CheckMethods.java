@@ -94,7 +94,6 @@ public class CheckMethods {
 		checkVertical();
 		checkHorizontal();
 		if(matches.size()==0){
-			
 		System.out.println(matches.size());
 		}
 		if(matches.isEmpty()){

@@ -14,19 +14,17 @@ public class ShapeLabel extends JLabel {
 	private int id, row, col;
 	private ImageIcon iconPic;
 	private Cursor cursor;
-	private Game game;
 
-	public ShapeLabel(String iconFileName, int id, int row, int col, Game game) {
+	public ShapeLabel(String iconFileName, int id, int row, int col) {
 		iconPic = new ImageIcon(getClass().getResource(iconFileName));
 		setIcon(iconPic);
 		setCursor();
 		this.id = id;
 		this.row = row;
 		this.col = col;
-
 	}
 
-	public ShapeLabel(ImageIcon icon, int id, int row, int col, Game game) {
+	public ShapeLabel(ImageIcon icon, int id, int row, int col) {
 		this.iconPic = icon;
 		setIcon(this.iconPic);
 		setCursor();

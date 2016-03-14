@@ -31,15 +31,16 @@ public class GridPanel extends JPanel {
 		this.game = game;
 		this.grid = new ShapeLabel[ROWS][COLS];
 		random = new Random();
-		shapes = new ShapeLabel[] {
-				new ShapeLabel("/purple.png", 0, -1, -1, game),
-				new ShapeLabel("/blue.png", 1, -1, -1, game),
-				new ShapeLabel("/green.png", 2, -1, -1, game),
-				new ShapeLabel("/orange.png", 3, -1, -1, game),
-				new ShapeLabel("/red.png", 4, -1, -1, game),
-				new ShapeLabel("/white.png", 5, -1, -1, game),
-				new ShapeLabel("/yellow.png", 6, -1, -1, game) };
+		shapes = new ShapeLabel[] { new ShapeLabel("/purple.png", 0, -1, -1),
+				new ShapeLabel("/blue.png", 1, -1, -1),
+				new ShapeLabel("/green.png", 2, -1, -1),
+				new ShapeLabel("/orange.png", 3, -1, -1),
+				new ShapeLabel("/red.png", 4, -1, -1),
+				new ShapeLabel("/white.png", 5, -1, -1),
+				new ShapeLabel("/yellow.png", 6, -1, -1) };
+
 		initializeGrid();
+		game.checkMatches();
 	}
 
 	private void initializeGrid() {
@@ -51,12 +52,11 @@ public class GridPanel extends JPanel {
 
 			}
 		}
-		//game.checkMatches();
 	}
 
 	public void swap(ShapeLabel label1, ShapeLabel label2) {
 		ShapeLabel swapLabel = new ShapeLabel(label1.getIconPic(),
-				label1.getId(), label1.getRow(), label1.getCol(), game);
+				label1.getId(), label1.getRow(), label1.getCol());
 		label1.setIconPic(label2.getIconPic());
 		label1.setId(label2.getId());
 		label2.setIconPic(swapLabel.getIconPic());
@@ -96,7 +96,7 @@ public class GridPanel extends JPanel {
 
 	private ShapeLabel getLabel(int num, int row, int col) {
 		return new ShapeLabel(shapes[num].getIconPic(), shapes[num].getId(),
-				row, col, game);
+				row, col);
 	}
 
 	public ShapeLabel getJewelAt(int row, int column) {
@@ -138,8 +138,6 @@ public class GridPanel extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 		}
-
-		@Override
 		public void mouseEntered(MouseEvent e2) {
 			if (mouseClicked) {
 				enteredLabel = (ShapeLabel) e2.getComponent();
@@ -165,5 +163,4 @@ public class GridPanel extends JPanel {
 			game.jewelReleased(pressedLabel, enteredLabel);
 		}
 	};
-
 }
