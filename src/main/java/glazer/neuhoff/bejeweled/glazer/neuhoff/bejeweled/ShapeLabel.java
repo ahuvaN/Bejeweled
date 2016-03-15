@@ -8,9 +8,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class ShapeLabel extends JLabel {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private int id, row, col;
 	private ImageIcon iconPic;
 	private Cursor cursor;
@@ -22,7 +22,7 @@ public class ShapeLabel extends JLabel {
 		this.id = id;
 		this.row = row;
 		this.col = col;
-		//this.addMouseListener(new MouseListenerSL(game));
+		// this.addMouseListener(new MouseListenerSL(game));
 
 	}
 
@@ -44,8 +44,13 @@ public class ShapeLabel extends JLabel {
 	}
 
 	public void setIconPic(ImageIcon icon) {
-		this.iconPic = icon;
-		setIcon(this.iconPic);
+		ImageIcon newIcon = icon;
+		JLabel label = new JLabel();
+		label.setIcon(newIcon);
+		add(label);
+
+		 this.iconPic = icon;
+		 setIcon(this.iconPic);
 		setCursor();
 	}
 
@@ -77,4 +82,5 @@ public class ShapeLabel extends JLabel {
 	public void setCol(int col) {
 		this.col = col;
 	}
+
 }

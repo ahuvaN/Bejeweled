@@ -32,6 +32,7 @@ public class BejeweledFrame extends JFrame {
 	public BejeweledFrame() throws ClassNotFoundException, IOException, InterruptedException {
 		setSize(950, 700);
 		setTitle("BEJEWELED");
+		
 		//will not allow x button to ensure that high score is saved on close
 		//setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.me=this;
@@ -79,6 +80,10 @@ public class BejeweledFrame extends JFrame {
 				// TODO Auto-generated method stub
 				game.newGame();
 				newGame.setFocusable(false);
+				newGame.setOpaque(false);
+				newGame.setContentAreaFilled(false);
+				newGame.setBorderPainted(false);
+				 newGame.setFocusPainted(false);
 			}
 		};
 		this.newGame.addActionListener(listener);

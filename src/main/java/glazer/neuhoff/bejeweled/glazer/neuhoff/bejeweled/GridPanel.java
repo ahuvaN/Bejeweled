@@ -1,12 +1,16 @@
 package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
+
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class GridPanel extends JPanel {
@@ -14,16 +18,20 @@ public class GridPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	static final int ROWS = 8, COLS = 8;
-	private final Color backgroundColor = new Color(0, 0, 0, 150);
+	//private final Color backgroundColor = new Color(0, 0, 0, 150);
 	private Random random;
 	private ShapeLabel[][] grid;
 	private ShapeLabel[] shapes;
 	private Game game;
+	private ImageIcon backImage;
+	private Image backgroundImage;
 
 	public GridPanel(Game game) throws InterruptedException {
 		setLayout(new GridLayout(ROWS, COLS));
-		//setBackground(backgroundColor);
-		setBackground(Color.BLUE);
+		// setBackground(backgroundColor);
+		backImage = new ImageIcon(getClass().getResource("/background1.jpg"));
+		this.backgroundImage = this.backImage.getImage();
+		// setBackground(Color.BLUE);
 		setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
 		this.random = new Random();
 		this.game = game;
@@ -33,6 +41,13 @@ public class GridPanel extends JPanel {
 		initializeGrid();
 
 		// game.checkMatches();
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+
+		super.paintComponent(g);
+		g.drawImage(this.backgroundImage, 0, 0, null);
 	}
 
 	private void createSampleJewels() {
@@ -170,7 +185,7 @@ public class GridPanel extends JPanel {
 			for (ShapeLabel jewel : match) {
 				deletePiece(jewel);
 			}
-
+			Thread.sleep(500);
 		}
 	}
 
@@ -201,12 +216,9 @@ public class GridPanel extends JPanel {
 
 		public void mouseReleased(MouseEvent e) {
 			mouseClicked = false;
-			try {
-				game.jewelReleased(pressedLabel, enteredLabel);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			JewelReleasedThread thread = new JewelReleasedThread(game,
+					pressedLabel, enteredLabel);
+			thread.start();
 		}
 	};
 

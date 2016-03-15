@@ -109,6 +109,7 @@ public class Game extends JComponent {
 				grid.deleteMatches(deletions, frame);
 				checkAgain = true;
 			}
+			//make a thread.sleep here
 		} while (checkAgain);
 
 	}
