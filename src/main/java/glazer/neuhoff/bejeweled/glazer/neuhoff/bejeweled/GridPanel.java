@@ -6,9 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GridPanel extends JPanel {
@@ -24,7 +22,7 @@ public class GridPanel extends JPanel {
 	private ShapeLabel enteredLabel, pressedLabel;
 	private boolean mouseClicked;
 
-	public GridPanel(Game game) {
+	public GridPanel(Game game) throws InterruptedException {
 		setLayout(new GridLayout(ROWS, COLS));
 		//setBackground(backgroundColor);
 		setBackground(Color.BLUE);
@@ -35,19 +33,21 @@ public class GridPanel extends JPanel {
 		random = new Random();
 		createSampleJewels();
 		initializeGrid();
-		
 		// game.checkMatches();
 	}
 
 	private void createSampleJewels() {
-		shapes = new ShapeLabel[] { new ShapeLabel("/purple.png", 0, -1, -1), new ShapeLabel("/blue.png", 1, -1, -1),
-				new ShapeLabel("/green.png", 2, -1, -1), new ShapeLabel("/orange.png", 3, -1, -1),
-				new ShapeLabel("/red.png", 4, -1, -1), new ShapeLabel("/white.png", 5, -1, -1),
+		shapes = new ShapeLabel[] { new ShapeLabel("/purple.png", 0, -1, -1),
+				new ShapeLabel("/blue.png", 1, -1, -1),
+				new ShapeLabel("/green.png", 2, -1, -1),
+				new ShapeLabel("/orange.png", 3, -1, -1),
+				new ShapeLabel("/red.png", 4, -1, -1),
+				new ShapeLabel("/white.png", 5, -1, -1),
 				new ShapeLabel("/yellow.png", 6, -1, -1) };
 
 	}
 
-	private void initializeGrid() {
+	private void initializeGrid() throws InterruptedException {
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
 				grid[row][col] = getNextShape(row, col);
@@ -56,7 +56,34 @@ public class GridPanel extends JPanel {
 
 			}
 		}
+		initialCheckMethods();
 	}
+
+	private void initialCheckMethods() {
+		// TODO Auto-generated method stub
+		boolean checkAgain = false;
+		do {
+			checkAgain = false;
+			ArrayList<ArrayList<ShapeLabel>> deletions = new ArrayList<ArrayList<ShapeLabel>>();
+			CheckMethods initialCheck = new CheckMethods(this);
+			deletions = initialCheck.checkBoard();
+			if (deletions != null) {
+				initialDeleteMatches(deletions);
+				checkAgain = true;
+			}
+		} while (checkAgain);
+	}
+
+	public void initialDeleteMatches(ArrayList<ArrayList<ShapeLabel>> deletions) {
+		// TODO Auto-generated method stub
+		for (ArrayList<ShapeLabel> match : deletions) {
+			for (ShapeLabel jewel : match) {
+				deletePiece(jewel);
+			}
+
+		}
+	}
+
 	public void newGrid() {
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
@@ -65,10 +92,12 @@ public class GridPanel extends JPanel {
 				grid[row][col].setId(s.getId());
 			}
 		}
-		
+		initialCheckMethods();
 	}
+
 	public void swap(ShapeLabel label1, ShapeLabel label2) {
-		ShapeLabel swapLabel = new ShapeLabel(label1.getIconPic(), label1.getId(), label1.getRow(), label1.getCol());
+		ShapeLabel swapLabel = new ShapeLabel(label1.getIconPic(),
+				label1.getId(), label1.getRow(), label1.getCol());
 		label1.setIconPic(label2.getIconPic());
 		label1.setId(label2.getId());
 		label2.setIconPic(swapLabel.getIconPic());
@@ -107,7 +136,8 @@ public class GridPanel extends JPanel {
 	}
 
 	private ShapeLabel getLabel(int num, int row, int col) {
-		return new ShapeLabel(shapes[num].getIconPic(), shapes[num].getId(), row, col);
+		return new ShapeLabel(shapes[num].getIconPic(), shapes[num].getId(),
+				row, col);
 	}
 
 	public ShapeLabel getJewelAt(int row, int column) {
@@ -133,13 +163,14 @@ public class GridPanel extends JPanel {
 		grid[0][pCol].setId(s.getId());
 	}
 
-	public void deleteMatches(ArrayList<ArrayList<ShapeLabel>> deletions, BejeweledFrame frame) throws InterruptedException {
+	public void deleteMatches(ArrayList<ArrayList<ShapeLabel>> deletions,
+			BejeweledFrame frame) throws InterruptedException {
 		// TODO Auto-generated method stub
 		int size;
 		for (ArrayList<ShapeLabel> match : deletions) {
-			size=match.size();
+			size = match.size();
 			game.increaseScore(size * 10);
-			if(size>3){
+			if (size > 3) {
 				frame.setCommentLabel();
 			}
 			for (ShapeLabel jewel : match) {
@@ -184,5 +215,4 @@ public class GridPanel extends JPanel {
 		}
 	};
 
-	
 }

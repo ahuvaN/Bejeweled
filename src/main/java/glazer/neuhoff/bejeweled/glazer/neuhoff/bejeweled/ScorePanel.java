@@ -14,6 +14,9 @@ import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -28,35 +31,25 @@ public class ScorePanel extends JPanel {
 	private ScheduledExecutorService executor2;
 	private MusicThread musicThread;
 	private JProgressBar bar;
-	private JPanel scoreValues;
 	private int score;
 	private JLabel highScoreLabel;
 	private int highScore;
 	private JLabel highScoreText;
-	private JPanel highScoreValues;
+	private JButton newGame;
+	private ImageIcon bejeweledIcon;
+	private JLabel icon;
+	private Color backgroundColor = new Color(0, 0, 0, 0);
 
-	public ScorePanel() {
-		setBackground(new Color(0, 0, 0, 0));
+	public ScorePanel(JButton newGame) {
+		setBackground(backgroundColor);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.scoreValues = new JPanel();
-		this.scoreValues.setLayout(new FlowLayout());
-		this.scoreValues.setBackground(new Color(0, 0, 0, 0));
-		this.highScoreValues = new JPanel();
-		this.highScoreValues.setLayout(new FlowLayout());
-		this.highScoreValues.setBackground(new Color(0, 0, 0, 0));
+		this.bejeweledIcon = new ImageIcon(getClass().getResource(
+				"/Bejeweled.png"));
 		this.scoreLabel = new JLabel("SCORE:");
-		this.scoreLabel = new JLabel("SCORE:");
-		scoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+		this.newGame = newGame;
 		this.scoreValue = new JLabel("0");
-		scoreValue = new JLabel("0");
-		scoreValue.setFont(new Font("Arial", Font.BOLD, 20));
-		bar = new JProgressBar(SwingConstants.VERTICAL, 0, 100);
-		bar.setBorderPainted(true);
-		bar.setBackground(new Color(0, 0, 0, 0));
-		bar.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));
+		this.bar = new JProgressBar(SwingConstants.VERTICAL, 0, 100);
 		this.mute = new JCheckBoxMenuItem("MUTE");
-		mute.setBackground(new Color(0, 0, 0, 0));
-		this.mute.addActionListener(muteGame);
 		this.sound = true;
 		this.musicThread = new MusicThread();
 		this.executor2 = Executors.newScheduledThreadPool(1);
@@ -65,12 +58,44 @@ public class ScorePanel extends JPanel {
 		this.highScore = 0;
 		this.highScoreLabel = new JLabel("0");
 		this.highScoreText = new JLabel("HIGH SCORE:");
-		this.scoreValues.add(scoreLabel);
-		this.scoreValues.add(scoreValue);
-		this.highScoreValues.add(highScoreText);
-		this.highScoreValues.add(highScoreLabel);
-		add(scoreValues);
-		add(this.highScoreValues);
+		this.icon = new JLabel();
+		this.backgroundColor= new Color(0,0,0,0);
+		setComponents();
+		addComponents();
+	}
+
+	private void setComponents() {
+		// TODO Auto-generated method stub
+		setFontSize(scoreLabel);
+		setFontSize(scoreValue);
+		setFontSize(this.highScoreLabel);
+		setFontSize(this.highScoreText);
+		setFontSize(this.newGame);
+		setBackground(bar);
+		setBackground(mute);
+		setBackground(newGame);
+		bar.setBorderPainted(true);
+		bar.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));		
+		icon.setIcon(this.bejeweledIcon);
+	}
+
+	private void setFontSize(JComponent label) {
+		label.setFont(new Font("Arial", Font.BOLD, 20));
+		// setBackground(new Color(0, 0, 0, 0));
+	}
+	private void setBackground(JComponent label){
+		label.setBackground(backgroundColor);
+		label.setOpaque(true);
+	}
+
+	private void addComponents() {
+		this.mute.addActionListener(muteGame);
+		add(icon);
+		add(this.newGame);
+		add(scoreLabel);
+		add(scoreValue);
+		add(this.highScoreText);
+		add(this.highScoreLabel);
 		add(bar);
 		add(mute);
 	}

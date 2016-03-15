@@ -10,20 +10,20 @@ public class CheckMethods {
 		this.grid = gridPanel;
 	}
 
-	public boolean isValidSwap(ShapeLabel pressedLabel, ShapeLabel enteredLabel) {
-		int pressedRow = pressedLabel.getRow();
-		int pressedCol = pressedLabel.getCol();
-		int enteredRow = enteredLabel.getRow();
-		int enteredCol = enteredLabel.getCol();
-		if (isValidSwapLocation(pressedRow, pressedCol, enteredRow, enteredCol)
-				&& prospectiveMatch(pressedLabel, enteredLabel, pressedRow,
-						pressedCol, enteredRow, enteredCol)) {
-			return true;
-		}
-		return false;
-	}
+//	public boolean isValidSwap(ShapeLabel pressedLabel, ShapeLabel enteredLabel) {
+////		int pressedRow = pressedLabel.getRow();
+////		int pressedCol = pressedLabel.getCol();
+////		int enteredRow = enteredLabel.getRow();
+////		int enteredCol = enteredLabel.getCol();
+//		if (isValidSwapLocation(pressedRow, pressedCol, enteredRow, enteredCol)
+//				&& prospectiveMatch(pressedLabel, enteredLabel, pressedRow,
+//						pressedCol, enteredRow, enteredCol)) {
+//			return true;
+//		}
+//		return false;
+//	}
 
-	private boolean isValidSwapLocation(int pressedRow, int pressedCol,
+	public boolean isValidSwapLocation(int pressedRow, int pressedCol,
 			int enteredRow, int enteredCol) {
 		// TODO Auto-generated method stub
 		if (((enteredRow == pressedRow + 1 || enteredRow == pressedRow - 1) && enteredCol == pressedCol)
@@ -33,7 +33,7 @@ public class CheckMethods {
 		return false;
 	}
 
-	private boolean prospectiveMatch(ShapeLabel pressedLabel,
+	public boolean prospectiveMatch(ShapeLabel pressedLabel,
 			ShapeLabel enteredLabel, int pressedRow, int pressedCol,
 			int enteredRow, int enteredCol) {
 		// TODO Auto-generated method stub

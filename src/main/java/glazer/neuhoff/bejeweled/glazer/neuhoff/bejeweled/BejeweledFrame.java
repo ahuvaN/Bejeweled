@@ -16,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 public class BejeweledFrame extends JFrame {
 
@@ -27,13 +26,11 @@ public class BejeweledFrame extends JFrame {
 	private Image img;
 	private Game game;
 	private JButton newGame;
-//	private JButton exit;
 	private JLabel commentLabel;
-	private JPanel northPanel;
 	private BejeweledFrame me;
 
-	public BejeweledFrame() throws ClassNotFoundException, IOException {
-		setSize(850, 700);
+	public BejeweledFrame() throws ClassNotFoundException, IOException, InterruptedException {
+		setSize(950, 700);
 		setTitle("BEJEWELED");
 		//will not allow x button to ensure that high score is saved on close
 		//setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -67,44 +64,23 @@ public class BejeweledFrame extends JFrame {
 				java.awt.Image.SCALE_SMOOTH);
 		setIconImage(img);
 		container = getContentPane();
-		this.northPanel = new JPanel();
 		container.setLayout(new BorderLayout());
 
 		this.commentLabel = new JLabel("EXCELLENT");
 		this.commentLabel.setFont(new Font("Arial", Font.BOLD, 70));
 		this.commentLabel.setForeground(Color.WHITE);
-		// this.commentLabel.setVisible(false);
-		this.container.add(this.commentLabel).setBounds(270, 250, 475, 100);
+		this.container.add(this.commentLabel).setBounds(470, 250, 475, 100);
 		this.commentLabel.setVisible(false);
-		this.game = new Game(this);
 		this.newGame = new JButton("NEW GAME");
-		//this.exit = new JButton("END GAME");
+		this.game = new Game(this, this.newGame);
 		ActionListener listener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-
 				game.newGame();
-			//	setHighScore();
+				newGame.setFocusable(false);
 			}
 		};
-//		ActionListener endGameListener = new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//
-//				try {
-//					game.endGame();
-//				} catch (FileNotFoundException e1) {
-//					e1.printStackTrace();
-//				} catch (IOException e1) {
-//					e1.printStackTrace();
-//				}
-//			}
-//		};
 		this.newGame.addActionListener(listener);
-
-		//this.exit.addActionListener(endGameListener);
-		this.northPanel.add(this.newGame);
-		//this.northPanel.add(this.exit);
-		this.container.add(this.northPanel, BorderLayout.NORTH);
 		this.container.add(game, BorderLayout.CENTER);
 
 	}
@@ -166,9 +142,11 @@ public class BejeweledFrame extends JFrame {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-		//frame.setHighScore();
 	}
 
 }
