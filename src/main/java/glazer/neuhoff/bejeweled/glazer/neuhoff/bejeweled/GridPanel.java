@@ -18,7 +18,7 @@ public class GridPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	static final int ROWS = 8, COLS = 8;
-	//private final Color backgroundColor = new Color(0, 0, 0, 150);
+	// private final Color backgroundColor = new Color(0, 0, 0, 150);
 	private Random random;
 	private ShapeLabel[][] grid;
 	private ShapeLabel[] shapes;
@@ -73,7 +73,7 @@ public class GridPanel extends JPanel {
 		initialCheckMethods();
 	}
 
-	private void initialCheckMethods() {
+	private void initialCheckMethods() throws InterruptedException {
 		// TODO Auto-generated method stub
 		boolean checkAgain = false;
 		do {
@@ -88,7 +88,8 @@ public class GridPanel extends JPanel {
 		} while (checkAgain);
 	}
 
-	public void initialDeleteMatches(ArrayList<ArrayList<ShapeLabel>> deletions) {
+	public void initialDeleteMatches(ArrayList<ArrayList<ShapeLabel>> deletions)
+			throws InterruptedException {
 		// TODO Auto-generated method stub
 		for (ArrayList<ShapeLabel> match : deletions) {
 			for (ShapeLabel jewel : match) {
@@ -98,7 +99,7 @@ public class GridPanel extends JPanel {
 		}
 	}
 
-	public void newGrid() {
+	public void newGrid() throws InterruptedException {
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
 				ShapeLabel s = getNextShape(row, col);
@@ -158,9 +159,10 @@ public class GridPanel extends JPanel {
 		return grid[row][column];
 	}
 
-	private void deletePiece(ShapeLabel piece) {
+	private void deletePiece(ShapeLabel piece) throws InterruptedException {
 		int pRow = piece.getRow();
 		int pCol = piece.getCol();
+
 		while (pRow > 0) {
 			grid[pRow][pCol].setIconPic(grid[pRow - 1][pCol].getIconPic());
 			grid[pRow][pCol].setId(grid[pRow - 1][pCol].getId());
@@ -176,16 +178,21 @@ public class GridPanel extends JPanel {
 			BejeweledFrame frame) throws InterruptedException {
 		// TODO Auto-generated method stub
 		int size;
+		int count = 1;
+		int bonus;
 		for (ArrayList<ShapeLabel> match : deletions) {
 			size = match.size();
-			game.increaseScore(size * 10);
-			if (size > 3) {
+			if (size == 3) {
+				game.increaseScore(count * 20);
+			} else {// (size > 3)
 				frame.setCommentLabel();
+				game.increaseScore(count * (size * 10));
 			}
 			for (ShapeLabel jewel : match) {
 				deletePiece(jewel);
 			}
 			Thread.sleep(500);
+			count++;
 		}
 	}
 
@@ -221,5 +228,18 @@ public class GridPanel extends JPanel {
 			thread.start();
 		}
 	};
+
+	public void deleteBonus() throws InterruptedException {
+		// TODO Auto-generated method stub
+		Random rand = new Random();
+		int row, col;
+		for (int i = 0; i < 15; i++) {
+			row = rand.nextInt(8);
+			col = rand.nextInt(8);
+			deletePiece(grid[row][col]);
+			game.increaseScore(15);
+			Thread.sleep(300);
+		}
+	}
 
 }

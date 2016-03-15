@@ -11,7 +11,6 @@ import javax.swing.JCheckBoxMenuItem;
 
 import java.awt.Font;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -60,7 +59,7 @@ public class ScorePanel extends JPanel {
 		this.highScoreText = new JLabel("HIGH SCORE:");
 		this.icon = new JLabel();
 		this.backgroundColor = new Color(0, 0, 0, 0);
-		this.purpleColor= new Color(204, 153, 255);
+		this.purpleColor = new Color(204, 153, 255);
 		setComponents();
 		addComponents();
 	}
@@ -74,17 +73,18 @@ public class ScorePanel extends JPanel {
 		setFontSize(this.newGame);
 		setBackground(bar);
 		setBackground(mute);
-		//setBackground(newGame);
+		// setBackground(newGame);
 		setBackground(this.scoreOval);
 		bar.setBorderPainted(true);
 		bar.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));
 		icon.setIcon(this.bejeweledIcon);
-		this.newGame.setIcon(new ImageIcon(getClass().getResource("/NewGameIcon2.jpg")));
+		this.newGame.setIcon(new ImageIcon(getClass().getResource(
+				"/NewGameIcon2.jpg")));
 		this.newGame.setHorizontalTextPosition(JLabel.CENTER);
 		newGame.setOpaque(false);
 		newGame.setContentAreaFilled(false);
 		newGame.setBorderPainted(false);
-		 newGame.setFocusPainted(false);
+		newGame.setFocusPainted(false);
 		this.scoreOval.setIcon(new ImageIcon(getClass().getResource(
 				"/ScoreOval.jpg")));
 		this.scoreOval.setText("0");
@@ -95,8 +95,7 @@ public class ScorePanel extends JPanel {
 	private void setFontSize(JComponent label) {
 		label.setFont(new Font("Arial", Font.BOLD, 20));
 		label.setForeground(this.purpleColor);
-		
-		
+
 		// setBackground(new Color(0, 0, 0, 0));
 	}
 
@@ -124,10 +123,19 @@ public class ScorePanel extends JPanel {
 		add(mute);
 	}
 
-	public void setScore(int value) {
+	public boolean setScore(int value) {
+		boolean bonus = false;
+		if (score >= 1000) {
+			value *= (score / 800);
+		}
+		int newScore = score + value;
+		if (score < 1000 && newScore > 1000) {
+			bonus = true;
+		}
 		score += value;
 		this.scoreOval.setText(String.valueOf(score));
 		bar.setValue(score);
+		return bonus;
 	}
 
 	Runnable playSound = new Runnable() {
