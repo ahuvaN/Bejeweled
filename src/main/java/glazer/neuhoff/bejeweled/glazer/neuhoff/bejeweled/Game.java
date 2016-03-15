@@ -44,7 +44,7 @@ public class Game extends JComponent{
 		input.close();
 	}
 
-	public void newGame() {
+	public void newGame() throws InterruptedException {
 		this.grid.newGrid();
 		this.methods.setNewGrid(grid);
 		this.scorePanel.newGame();
@@ -107,11 +107,17 @@ public void jewelReleased(ShapeLabel pressedLabel, ShapeLabel enteredLabel)
 				grid.deleteMatches(deletions, frame);
 				checkAgain = true;
 			}
+			// make a thread.sleep here
 		} while (checkAgain);
 	}
 
-	public void increaseScore(int amount) {
-		scorePanel.setScore(amount);
+	public void increaseScore(int amount) throws InterruptedException {
+
+		boolean bonus = scorePanel.setScore(amount);
+		if (bonus) {
+			frame.setBonusLabel();
+			grid.deleteBonus();
+		}
 	}
 
 	public void endGame() throws FileNotFoundException, IOException {

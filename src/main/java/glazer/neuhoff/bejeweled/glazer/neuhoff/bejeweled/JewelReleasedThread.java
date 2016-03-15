@@ -1,25 +1,24 @@
 package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
 
-public class SwapThread extends Thread {
+public class JewelReleasedThread extends Thread {
+	private Game game;
 	private ShapeLabel pressedLabel;
 	private ShapeLabel enteredLabel;
-	private GridPanel grid;
 
-	public SwapThread(ShapeLabel enteredLabel, ShapeLabel pressedLabel,
-			GridPanel grid) {
+	public JewelReleasedThread(Game game, ShapeLabel pressedLabel,
+			ShapeLabel enteredLabel) {
+		this.game = game;
 		this.pressedLabel = pressedLabel;
 		this.enteredLabel = enteredLabel;
-		this.grid = grid;
 	}
 
 	public void run() {
-		grid.swap(pressedLabel, enteredLabel);
 		try {
-			Thread.sleep(300);
+			game.jewelReleased(pressedLabel, enteredLabel);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		grid.swap(pressedLabel, enteredLabel);
+
 	}
 }

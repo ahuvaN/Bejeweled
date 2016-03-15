@@ -29,34 +29,35 @@ public class BejeweledFrame extends JFrame {
 	private JLabel commentLabel;
 	private BejeweledFrame me;
 
-	public BejeweledFrame() throws ClassNotFoundException, IOException, InterruptedException {
+	public BejeweledFrame() throws ClassNotFoundException, IOException,
+			InterruptedException {
 		setSize(950, 700);
 		setTitle("BEJEWELED");
-		//will not allow x button to ensure that high score is saved on close
-		//setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.me=this;
+
+		// will not allow x button to ensure that high score is saved on close
+		// setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.me = this;
 		addWindowListener(new java.awt.event.WindowAdapter() {
-		    @Override
-		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		        if (JOptionPane.showConfirmDialog(me, 
-		            "Are you sure to close this window?", "Really Closing?", 
-		            JOptionPane.YES_NO_OPTION,
-		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-		        	try {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				if (JOptionPane.showConfirmDialog(me,
+						"Are you sure to close this window?",
+						"Really Closing?", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+					try {
 						game.endGame();
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-		            System.exit(0);
-		        }else{
-			    	setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-			    }
-		    }
+					System.exit(0);
+				} else {
+					setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+				}
+			}
 		});
-		
-		
+
 		setContentPane(new JLabel(new ImageIcon(getClass().getResource(
 				"/background1.jpg"))));
 		frameIcon = new ImageIcon(getClass().getResource("/GameIcon.jpg"));
@@ -69,15 +70,22 @@ public class BejeweledFrame extends JFrame {
 		this.commentLabel = new JLabel("EXCELLENT");
 		this.commentLabel.setFont(new Font("Arial", Font.BOLD, 70));
 		this.commentLabel.setForeground(Color.WHITE);
-		this.container.add(this.commentLabel).setBounds(470, 250, 475, 100);
+		this.container.add(this.commentLabel).setBounds(450, 250, 475, 100);
 		this.commentLabel.setVisible(false);
 		this.newGame = new JButton("NEW GAME");
 		this.game = new Game(this, this.newGame);
 		ActionListener listener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				game.newGame();
+				try {
+					game.newGame();
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 				newGame.setFocusable(false);
+				newGame.setOpaque(false);
+				newGame.setContentAreaFilled(false);
+				newGame.setBorderPainted(false);
+				newGame.setFocusPainted(false);
 			}
 		};
 		this.newGame.addActionListener(listener);
@@ -87,6 +95,14 @@ public class BejeweledFrame extends JFrame {
 
 	public void setCommentLabel() throws InterruptedException {
 		setFlashLabel();
+		FlashLabelThread flashThread = new FlashLabelThread(this.commentLabel);
+		flashThread.start();
+
+	}
+
+	public void setBonusLabel() throws InterruptedException {
+		this.commentLabel.setText("BONUS!");
+		this.commentLabel.setForeground(Color.RED);
 		FlashLabelThread flashThread = new FlashLabelThread(this.commentLabel);
 		flashThread.start();
 
@@ -143,10 +159,9 @@ public class BejeweledFrame extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

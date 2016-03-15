@@ -1,6 +1,8 @@
 package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
 
 import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.Executors;
@@ -9,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.JCheckBoxMenuItem;
 
-import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
@@ -24,86 +25,101 @@ import javax.swing.SwingConstants;
 
 public class ScorePanel extends JPanel {
 
-	private static final long serialVersionUID = 1L;
-	private JLabel scoreLabel, scoreValue;
 	private boolean sound;
 	private JCheckBoxMenuItem mute;
 	private ScheduledExecutorService executor2;
 	private MusicThread musicThread;
-	private JProgressBar bar;
-	private int score;
-	private JLabel highScoreLabel;
-	private int highScore;
-	private JLabel highScoreText;
+	private int score, highScore;;
+	private JLabel highScoreLabel, highScoreText, icon, scoreOval;
 	private JButton newGame;
-	private ImageIcon bejeweledIcon;
-	private JLabel icon;
 	private Color backgroundColor = new Color(0, 0, 0, 0);
+	private Color purpleColor = new Color(204, 153, 255);
 
-	public ScorePanel(JButton newGame) {
+	public ScorePanel(JButton ngame) {
+		scoreOval = new JLabel("0");
+		newGame = ngame;
+		mute = new JCheckBoxMenuItem("MUTE");
+		sound = true;
+		musicThread = new MusicThread();
+		executor2 = Executors.newScheduledThreadPool(1);
+		executor2.scheduleAtFixedRate(playSound, 0, 66, TimeUnit.SECONDS);
+		score = highScore = 0;
+		highScoreLabel = new JLabel("0");
+		highScoreText = new JLabel("HIGH SCORE:");
+		icon = new JLabel();
+		
 		setBackground(backgroundColor);
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.bejeweledIcon = new ImageIcon(getClass().getResource(
-				"/Bejeweled.png"));
-		this.scoreLabel = new JLabel("SCORE:");
-		this.newGame = newGame;
-		this.scoreValue = new JLabel("0");
-		this.bar = new JProgressBar(SwingConstants.VERTICAL, 0, 100);
-		this.mute = new JCheckBoxMenuItem("MUTE");
-		this.sound = true;
-		this.musicThread = new MusicThread();
-		this.executor2 = Executors.newScheduledThreadPool(1);
-		this.executor2.scheduleAtFixedRate(playSound, 0, 66, TimeUnit.SECONDS);
-		this.score = 0;
-		this.highScore = 0;
-		this.highScoreLabel = new JLabel("0");
-		this.highScoreText = new JLabel("HIGH SCORE:");
-		this.icon = new JLabel();
-		this.backgroundColor= new Color(0,0,0,0);
+		setLayout(new GridLayout());//new BoxLayout(this, BoxLayout.Y_AXIS));
 		setComponents();
 		addComponents();
 	}
 
 	private void setComponents() {
-		// TODO Auto-generated method stub
-		setFontSize(scoreLabel);
-		setFontSize(scoreValue);
-		setFontSize(this.highScoreLabel);
-		setFontSize(this.highScoreText);
-		setFontSize(this.newGame);
-		setBackground(bar);
+		setFontSize(highScoreLabel);
+		setFontSize(highScoreText);
+		setFontSize(newGame);
+		setFontSize(scoreOval);
 		setBackground(mute);
-		setBackground(newGame);
-		bar.setBorderPainted(true);
-		bar.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));		
-		icon.setIcon(this.bejeweledIcon);
+		setBackground(scoreOval);
+		
+		highScoreLabel.setHorizontalTextPosition(JLabel.CENTER);
+		highScoreText.setHorizontalTextPosition(JLabel.CENTER);
+		newGame.setHorizontalTextPosition(JLabel.CENTER);
+		scoreOval.setHorizontalTextPosition(JLabel.CENTER);
+
+		icon.setIcon(new ImageIcon(getClass().getResource(
+				"/Bejeweled.png")));
+		newGame.setIcon(new ImageIcon(getClass().getResource(
+				"/OvalIcon.jpg")));
+		newGame.setOpaque(false);
+		newGame.setContentAreaFilled(false);
+		newGame.setBorderPainted(false);
+		newGame.setFocusPainted(false);
+		scoreOval.setIcon(new ImageIcon(getClass().getResource(
+				"/OvalIcon.jpg")));
+
 	}
 
 	private void setFontSize(JComponent label) {
 		label.setFont(new Font("Arial", Font.BOLD, 20));
-		// setBackground(new Color(0, 0, 0, 0));
+		label.setForeground(purpleColor);
 	}
-	private void setBackground(JComponent label){
+
+	private void setBackground(JComponent label) {
 		label.setBackground(backgroundColor);
 		label.setOpaque(true);
 	}
 
 	private void addComponents() {
-		this.mute.addActionListener(muteGame);
+		mute.addActionListener(muteGame);
+		add(new JLabel(" "));
+		add(new JLabel(" "));
 		add(icon);
-		add(this.newGame);
-		add(scoreLabel);
-		add(scoreValue);
-		add(this.highScoreText);
-		add(this.highScoreLabel);
-		add(bar);
+		add(new JLabel(" "));
+		add(new JLabel(" "));
+		add(new JLabel());
+		add(scoreOval);
+		add(new JLabel(" "));
+		add(highScoreText);
+		add(highScoreLabel);
+		add(new JLabel(" "));
+		//add(newGame);
+		add(new JLabel(" "));
 		add(mute);
 	}
 
-	public void setScore(int value) {
+	public boolean setScore(int value) {
+		boolean bonus = false;
+		if (score >= 1000) {
+			value *= (score / 800);
+		}
+		int newScore = score + value;
+		if (score < 1000 && newScore > 1000) {
+			bonus = true;
+		}
 		score += value;
-		this.scoreValue.setText(String.valueOf(score));
-		bar.setValue(score);
+		this.scoreOval.setText(String.valueOf(score));
+		return bonus;
 	}
 
 	Runnable playSound = new Runnable() {
@@ -132,33 +148,27 @@ public class ScorePanel extends JPanel {
 
 	};
 
-	public void setBarGoal() {
-		this.bar.setMaximum(highScore);
-	}
-
 	public void newGame() {
-		if (this.score > highScore) {
-			highScore = this.score;
+		if (score > highScore) {
+			highScore = score;
 			resetHighScore(highScore);
 		}
-		this.score = 0;
-		this.scoreValue.setText(String.valueOf(score));
-		this.bar.setValue(0);
+		score = 0;
+		scoreOval.setText(String.valueOf(score));
 	}
 
 	public void resetHighScore(int newHighScore) {
-		this.highScore = newHighScore;
-		this.highScoreLabel.setText(String.valueOf(this.highScore));
-		setBarGoal();
+		highScore = newHighScore;
+		highScoreLabel.setText(String.valueOf(highScore));
 	}
 
 	public Object getHighScore() {
-		return this.highScore;
+		return highScore;
 	}
 
 	public void endGame() {
-		if (this.score > highScore) {
-			highScore = this.score;
+		if (score > highScore) {
+			highScore = score;
 		}
 	}
 }
