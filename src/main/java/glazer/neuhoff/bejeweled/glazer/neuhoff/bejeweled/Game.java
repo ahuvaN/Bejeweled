@@ -13,23 +13,23 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
-public class Game extends JComponent{
+public class Game extends JComponent {
 
 	private static final long serialVersionUID = 1L;
 	private CheckMethods methods;
 	private GridPanel grid;
 	private ScorePanel scorePanel;
-	private BejeweledFrame frame;
+	protected BejeweledFrame frame;
 	private int highScore;
 
-	public Game(BejeweledFrame frame, JButton newGame)
+	public Game(BejeweledFrame bframe, JButton newGame)
 			throws ClassNotFoundException, IOException, InterruptedException {
-		this.highScore = 500;
+		highScore = 500;
 		setLayout(new BorderLayout());
-		this.frame = frame;
-		this.grid = new GridPanel(this);
-		this.methods = new CheckMethods(grid);
-		this.scorePanel = new ScorePanel(newGame);
+		frame = bframe;
+		grid = new GridPanel(this);
+		methods = new CheckMethods(grid);
+		scorePanel = new ScorePanel(newGame);
 		add(scorePanel, BorderLayout.WEST);
 		add(grid, BorderLayout.CENTER);
 		getSavedHighScore();
@@ -39,15 +39,16 @@ public class Game extends JComponent{
 		ObjectInputStream input = new ObjectInputStream(new FileInputStream(
 				"HighScore.ser"));
 
-		this.highScore = (Integer) input.readObject();
-		this.scorePanel.resetHighScore(this.highScore);
+		highScore = (Integer) input.readObject();
+		scorePanel.resetHighScore(highScore);
 		input.close();
 	}
 
 	public void newGame() throws InterruptedException {
-		this.grid.newGrid();
-		this.methods.setNewGrid(grid);
-		this.scorePanel.newGame();
+		grid.newGrid();
+		methods.setNewGrid(grid);
+		scorePanel.newGame();
+		frame.repaint();
 	}
 
 	// change to animate the switch instead of cursor
@@ -55,18 +56,13 @@ public class Game extends JComponent{
 		setCursor(pressedLabel.getCursor());
 	}
 
-public void jewelReleased(ShapeLabel pressedLabel, ShapeLabel enteredLabel)
+	public void jewelReleased(ShapeLabel pressedLabel, ShapeLabel enteredLabel)
 			throws InterruptedException {
 		setGridCursor(Cursor.getDefaultCursor());
-		System.out.println(enteredLabel.getRow() + " " + enteredLabel.getCol());
-		System.out.println(pressedLabel.getRow() + " " + pressedLabel.getCol());
-		grid.showBoard();
 		if (!pressedLabel.equals(enteredLabel)) {
 			tryJewelSwap(pressedLabel, enteredLabel);
 		}
-		grid.showBoard();
 	}
-
 
 	public void setGridCursor(Cursor cursor) {
 		setCursor(cursor);

@@ -10,22 +10,8 @@ public class CheckMethods {
 		this.grid = gridPanel;
 	}
 
-//	public boolean isValidSwap(ShapeLabel pressedLabel, ShapeLabel enteredLabel) {
-////		int pressedRow = pressedLabel.getRow();
-////		int pressedCol = pressedLabel.getCol();
-////		int enteredRow = enteredLabel.getRow();
-////		int enteredCol = enteredLabel.getCol();
-//		if (isValidSwapLocation(pressedRow, pressedCol, enteredRow, enteredCol)
-//				&& prospectiveMatch(pressedLabel, enteredLabel, pressedRow,
-//						pressedCol, enteredRow, enteredCol)) {
-//			return true;
-//		}
-//		return false;
-//	}
-
 	public boolean isValidSwapLocation(int pressedRow, int pressedCol,
 			int enteredRow, int enteredCol) {
-		// TODO Auto-generated method stub
 		if (((enteredRow == pressedRow + 1 || enteredRow == pressedRow - 1) && enteredCol == pressedCol)
 				|| ((enteredCol == pressedCol + 1 || enteredCol == pressedCol - 1) && enteredRow == pressedRow)) {
 			return true;
@@ -36,7 +22,6 @@ public class CheckMethods {
 	public boolean prospectiveMatch(ShapeLabel pressedLabel,
 			ShapeLabel enteredLabel, int pressedRow, int pressedCol,
 			int enteredRow, int enteredCol) {
-		// TODO Auto-generated method stub
 
 		if (isHorizontalMatch(pressedRow, pressedCol, enteredLabel)
 				|| isHorizontalMatch(enteredRow, enteredCol, pressedLabel)
@@ -60,7 +45,6 @@ public class CheckMethods {
 	}
 
 	private boolean isVerticalMatch(int row1, int col1, ShapeLabel piece2) {
-		// TODO Auto-generated method stub
 		if (row1 + 2 < GridPanel.ROWS
 				&& checkMatch(piece2, row1 + 1, row1 + 2, col1, col1)) {
 			return true;
@@ -75,7 +59,6 @@ public class CheckMethods {
 	}
 
 	private boolean isHorizontalMatch(int row1, int col1, ShapeLabel piece2) {
-		// TODO Auto-generated method stub
 		if (col1 + 2 < GridPanel.COLS
 				&& checkMatch(piece2, row1, row1, col1 + 1, col1 + 2)) {
 			return true;
@@ -90,12 +73,9 @@ public class CheckMethods {
 	}
 
 	public ArrayList<ArrayList<ShapeLabel>> checkBoard() {
-		this.matches = new ArrayList<ArrayList<ShapeLabel>>();
+		matches = new ArrayList<ArrayList<ShapeLabel>>();
 		checkVertical();
 		checkHorizontal();
-		if(matches.size()==0){
-		System.out.println(matches.size());
-		}
 		if(matches.isEmpty()){
 			return null;
 		}
@@ -104,7 +84,6 @@ public class CheckMethods {
 	}
 
 	private void checkHorizontal() {
-		// TODO Auto-generated method stub
 		int r;
 		int c;
 		int temp;
@@ -122,7 +101,7 @@ public class CheckMethods {
 					}
 				}
 				if (chain.size() > 2)
-					this.matches.add(chain);
+					matches.add(chain);
 				r = temp - 1;
 			}
 		}
@@ -148,15 +127,14 @@ public class CheckMethods {
 					}
 				}
 				if (chain.size() > 2)
-					this.matches.add(chain);
+					matches.add(chain);
 				c = temp - 1;
 			}
 		}
 	}
 
 	public void setNewGrid(GridPanel grid2) {
-		// TODO Auto-generated method stub
-		this.grid=grid2;
+		grid = grid2;
 	}
 
 }

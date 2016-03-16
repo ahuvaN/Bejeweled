@@ -44,12 +44,12 @@ public class ScorePanel extends JPanel {
 		executor2 = Executors.newScheduledThreadPool(1);
 		executor2.scheduleAtFixedRate(playSound, 0, 66, TimeUnit.SECONDS);
 		score = highScore = 0;
+		highScoreText = new JLabel("HIGH SCORE");
 		highScoreLabel = new JLabel("0");
-		highScoreText = new JLabel("HIGH SCORE:");
 		icon = new JLabel();
-		
+
 		setBackground(backgroundColor);
-		setLayout(new GridLayout());//new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new GridLayout(5, 1, 7, 7));
 		setComponents();
 		addComponents();
 	}
@@ -61,22 +61,21 @@ public class ScorePanel extends JPanel {
 		setFontSize(scoreOval);
 		setBackground(mute);
 		setBackground(scoreOval);
-		
-		highScoreLabel.setHorizontalTextPosition(JLabel.CENTER);
-		highScoreText.setHorizontalTextPosition(JLabel.CENTER);
+		setBackground(newGame);
+
+		highScoreLabel.setHorizontalAlignment(JLabel.CENTER);
+		highScoreText.setHorizontalAlignment(JLabel.CENTER);
+		//TextPosition(JLabel.CENTER);
 		newGame.setHorizontalTextPosition(JLabel.CENTER);
 		scoreOval.setHorizontalTextPosition(JLabel.CENTER);
 
-		icon.setIcon(new ImageIcon(getClass().getResource(
-				"/Bejeweled.png")));
-		newGame.setIcon(new ImageIcon(getClass().getResource(
-				"/OvalIcon.jpg")));
-		newGame.setOpaque(false);
-		newGame.setContentAreaFilled(false);
+		icon.setIcon(new ImageIcon(getClass().getResource("/Bejeweled.png")));
+		newGame.setIcon(new ImageIcon(getClass().getResource("/OvalIcon.png")));
+		newGame.setBorder(null);
 		newGame.setBorderPainted(false);
-		newGame.setFocusPainted(false);
-		scoreOval.setIcon(new ImageIcon(getClass().getResource(
-				"/OvalIcon.jpg")));
+		newGame.setContentAreaFilled(false);
+		newGame.setOpaque(true);
+		scoreOval.setIcon(new ImageIcon(getClass().getResource("/OvalIcon.png")));
 
 	}
 
@@ -88,23 +87,24 @@ public class ScorePanel extends JPanel {
 	private void setBackground(JComponent label) {
 		label.setBackground(backgroundColor);
 		label.setOpaque(true);
+		
 	}
 
 	private void addComponents() {
 		mute.addActionListener(muteGame);
-		add(new JLabel(" "));
-		add(new JLabel(" "));
 		add(icon);
-		add(new JLabel(" "));
-		add(new JLabel(" "));
-		add(new JLabel());
 		add(scoreOval);
-		add(new JLabel(" "));
-		add(highScoreText);
-		add(highScoreLabel);
-		add(new JLabel(" "));
-		//add(newGame);
-		add(new JLabel(" "));
+		JPanel p = new JPanel();
+		p.setBackground(backgroundColor);
+		p.setLayout(new GridLayout(6, 1));
+		p.add(new JLabel(" "));
+		p.add(new JLabel(" "));
+		p.add(highScoreText);
+		p.add(highScoreLabel);
+		p.add(new JLabel(" "));
+		p.add(new JLabel(" "));
+		add(p);
+		add(newGame);
 		add(mute);
 	}
 
@@ -118,7 +118,7 @@ public class ScorePanel extends JPanel {
 			bonus = true;
 		}
 		score += value;
-		this.scoreOval.setText(String.valueOf(score));
+		scoreOval.setText(String.valueOf(score));
 		return bonus;
 	}
 

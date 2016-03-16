@@ -4,9 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Random;
@@ -31,15 +34,16 @@ public class BejeweledFrame extends JFrame {
 
 	public BejeweledFrame() throws ClassNotFoundException, IOException,
 			InterruptedException {
-		setSize(950, 700);
+		setSize(1000, 750);
 		setTitle("BEJEWELED");
 
 		// will not allow x button to ensure that high score is saved on close
 		// setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.me = this;
+		me = this;
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				me.repaint();
 				if (JOptionPane.showConfirmDialog(me,
 						"Are you sure to close this window?",
 						"Really Closing?", JOptionPane.YES_NO_OPTION,
@@ -67,17 +71,19 @@ public class BejeweledFrame extends JFrame {
 		container = getContentPane();
 		container.setLayout(new BorderLayout());
 
-		this.commentLabel = new JLabel("EXCELLENT");
-		this.commentLabel.setFont(new Font("Arial", Font.BOLD, 70));
-		this.commentLabel.setForeground(Color.WHITE);
-		this.container.add(this.commentLabel).setBounds(450, 250, 475, 100);
-		this.commentLabel.setVisible(false);
-		this.newGame = new JButton("NEW GAME");
-		this.game = new Game(this, this.newGame);
-		ActionListener listener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		commentLabel = new JLabel("EXCELLENT");
+		commentLabel.setFont(new Font("Arial", Font.BOLD, 70));
+		commentLabel.setForeground(Color.WHITE);
+		container.add(commentLabel).setBounds(450, 250, 475, 100);
+		commentLabel.setVisible(false);
+		newGame = new JButton("NEW GAME");
+		game = new Game(this, newGame);
+		MouseListener listener = new MouseListener() {
+			@Override
+			public void mousePressed(MouseEvent arg0) { 
 				try {
 					game.newGame();
+					repaint();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -86,24 +92,35 @@ public class BejeweledFrame extends JFrame {
 				newGame.setContentAreaFilled(false);
 				newGame.setBorderPainted(false);
 				newGame.setFocusPainted(false);
+				repaint();
 			}
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) { }
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) { }
 		};
-		this.newGame.addActionListener(listener);
-		this.container.add(game, BorderLayout.CENTER);
+		newGame.addMouseListener(listener);
+		container.add(game, BorderLayout.CENTER);
 
 	}
 
 	public void setCommentLabel() throws InterruptedException {
 		setFlashLabel();
-		FlashLabelThread flashThread = new FlashLabelThread(this.commentLabel);
+		FlashLabelThread flashThread = new FlashLabelThread(commentLabel);
 		flashThread.start();
 
 	}
 
 	public void setBonusLabel() throws InterruptedException {
-		this.commentLabel.setText("BONUS!");
-		this.commentLabel.setForeground(Color.RED);
-		FlashLabelThread flashThread = new FlashLabelThread(this.commentLabel);
+		commentLabel.setText("BONUS!");
+		commentLabel.setForeground(Color.RED);
+		FlashLabelThread flashThread = new FlashLabelThread(commentLabel);
 		flashThread.start();
 
 	}
