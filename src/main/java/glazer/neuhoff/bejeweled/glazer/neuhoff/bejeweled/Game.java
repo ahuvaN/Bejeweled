@@ -88,6 +88,7 @@ public class Game extends JComponent {
 
 			}
 		}
+		frame.repaint();
 	}
 
 	public void checkMatches() throws InterruptedException {

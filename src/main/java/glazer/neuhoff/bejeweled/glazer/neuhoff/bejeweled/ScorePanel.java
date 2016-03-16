@@ -49,7 +49,7 @@ public class ScorePanel extends JPanel {
 		icon = new JLabel();
 
 		setBackground(backgroundColor);
-		setLayout(new GridLayout(5, 1, 7, 7));
+		setLayout(new GridLayout(5, 1, 0, 7));
 		setComponents();
 		addComponents();
 	}
@@ -65,12 +65,11 @@ public class ScorePanel extends JPanel {
 
 		highScoreLabel.setHorizontalAlignment(JLabel.CENTER);
 		highScoreText.setHorizontalAlignment(JLabel.CENTER);
-		//TextPosition(JLabel.CENTER);
 		newGame.setHorizontalTextPosition(JLabel.CENTER);
 		scoreOval.setHorizontalTextPosition(JLabel.CENTER);
 
 		icon.setIcon(new ImageIcon(getClass().getResource("/Bejeweled.png")));
-		newGame.setIcon(new ImageIcon(getClass().getResource("/OvalIcon.png")));
+		newGame.setIcon(new ImageIcon(getClass().getResource("/newGame.png")));
 		newGame.setBorder(null);
 		newGame.setBorderPainted(false);
 		newGame.setContentAreaFilled(false);

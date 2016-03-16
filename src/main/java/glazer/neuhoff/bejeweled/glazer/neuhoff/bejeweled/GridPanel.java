@@ -23,14 +23,10 @@ public class GridPanel extends JPanel {
 	private ShapeLabel[][] grid;
 	private ShapeLabel[] shapes;
 	private Game game;
-	//private ImageIcon backImage;
-	//private Image backgroundImage;
 
 	public GridPanel(Game bGame) throws InterruptedException {
 		setLayout(new GridLayout(ROWS, COLS));
 		setBackground(new Color(0,0,0,115));
-		//backImage = new ImageIcon(getClass().getResource("/background1.jpg"));
-		//backgroundImage = backImage.getImage();
 		setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
 		random = new Random();
 		game = bGame;
@@ -38,16 +34,7 @@ public class GridPanel extends JPanel {
 		random = new Random();
 		createSampleJewels();
 		initializeGrid();
-
-	}
-
-	@Override
-	protected void paintComponent(Graphics g) {
-		g.setColor(new Color(0, 0, 0, 0));
-		g.fillRect(0, 0, getWidth(), getHeight());
-		super.paintComponent(g);
-
-		// g.drawImage(backgroundImage, 0, 0, null);
+		game.frame.repaint();
 	}
 
 	private void createSampleJewels() {
@@ -67,7 +54,6 @@ public class GridPanel extends JPanel {
 				grid[row][col] = getNextShape(row, col);
 				grid[row][col].addMouseListener(listener);
 				add(grid[row][col]);
-
 			}
 		}
 		initialCheckMethods();
@@ -114,6 +100,7 @@ public class GridPanel extends JPanel {
 		label1.setId(label2.getId());
 		label2.setIconPic(swapLabel.getIconPic());
 		label2.setId(swapLabel.getId());
+		game.frame.repaint();
 	}
 
 	private ShapeLabel getNextShape(int row, int col) {
@@ -178,7 +165,7 @@ public class GridPanel extends JPanel {
 				deletePiece(jewel);
 				frame.repaint();
 			}
-			Thread.sleep(600);
+			Thread.sleep(300);
 			count++;
 		}
 		frame.repaint();
@@ -226,6 +213,7 @@ public class GridPanel extends JPanel {
 			deletePiece(grid[row][col]);
 			game.increaseScore(15);
 			Thread.sleep(300);
+			game.frame.repaint();
 		}
 	}
 

@@ -15,9 +15,8 @@ public class SwapThread extends Thread {
 	public void run() {
 		grid.swap(pressedLabel, enteredLabel);
 		try {
-			Thread.sleep(300);
+			Thread.sleep(200);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		grid.swap(pressedLabel, enteredLabel);

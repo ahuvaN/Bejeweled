@@ -76,7 +76,7 @@ public class BejeweledFrame extends JFrame {
 		commentLabel.setForeground(Color.WHITE);
 		container.add(commentLabel).setBounds(450, 250, 475, 100);
 		commentLabel.setVisible(false);
-		newGame = new JButton("NEW GAME");
+		newGame = new JButton();
 		game = new Game(this, newGame);
 		MouseListener listener = new MouseListener() {
 			@Override

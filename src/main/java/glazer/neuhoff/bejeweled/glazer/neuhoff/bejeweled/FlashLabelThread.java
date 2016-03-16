@@ -13,7 +13,7 @@ public class FlashLabelThread extends Thread {
 	public void run() {
 
 		int x = 0;
-		while (x < 6) {
+		while (x < 4) {
 			commentLabel.setVisible(true);
 
 			try {
