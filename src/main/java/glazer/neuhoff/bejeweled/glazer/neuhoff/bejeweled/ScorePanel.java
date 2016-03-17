@@ -70,10 +70,7 @@ public class ScorePanel extends JPanel {
 
 		icon.setIcon(new ImageIcon(getClass().getResource("/Bejeweled.png")));
 		newGame.setIcon(new ImageIcon(getClass().getResource("/newGame.png")));
-		newGame.setBorder(null);
-		newGame.setBorderPainted(false);
-		newGame.setContentAreaFilled(false);
-		newGame.setOpaque(true);
+		
 		scoreOval.setIcon(new ImageIcon(getClass().getResource("/OvalIcon.png")));
 
 	}

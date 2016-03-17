@@ -77,35 +77,24 @@ public class BejeweledFrame extends JFrame {
 		container.add(commentLabel).setBounds(450, 250, 475, 100);
 		commentLabel.setVisible(false);
 		newGame = new JButton();
+		newGame.setFocusable(false);
+		newGame.setOpaque(false);
+		newGame.setContentAreaFilled(false);
+		newGame.setBorderPainted(false);
+		newGame.setFocusPainted(false);
 		game = new Game(this, newGame);
-		MouseListener listener = new MouseListener() {
+		ActionListener listener = new ActionListener() {
 			@Override
-			public void mousePressed(MouseEvent arg0) { 
+			public void actionPerformed(ActionEvent arg0) {
 				try {
 					game.newGame();
-					repaint();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
-				newGame.setFocusable(false);
-				newGame.setOpaque(false);
-				newGame.setContentAreaFilled(false);
-				newGame.setBorderPainted(false);
-				newGame.setFocusPainted(false);
 				repaint();
 			}
-
-			@Override
-			public void mouseClicked(MouseEvent arg0) {}
-			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-			@Override
-			public void mouseExited(MouseEvent arg0) { }
-			
-			@Override
-			public void mouseReleased(MouseEvent arg0) { }
 		};
-		newGame.addMouseListener(listener);
+		newGame.addActionListener(listener);
 		container.add(game, BorderLayout.CENTER);
 
 	}
