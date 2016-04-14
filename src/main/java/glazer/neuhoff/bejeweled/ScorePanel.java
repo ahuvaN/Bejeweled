@@ -1,4 +1,4 @@
-package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
+package glazer.neuhoff.bejeweled;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -151,6 +151,11 @@ public class ScorePanel extends JPanel {
 		}
 		score = 0;
 		scoreOval.setText(String.valueOf(score));
+		newGame.setFocusable(false);
+		newGame.setOpaque(false);
+		newGame.setContentAreaFilled(false);
+		newGame.setBorderPainted(false);
+		newGame.setFocusPainted(false);
 	}
 
 	public void resetHighScore(int newHighScore) {

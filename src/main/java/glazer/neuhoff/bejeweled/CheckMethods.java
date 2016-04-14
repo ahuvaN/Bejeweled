@@ -1,4 +1,4 @@
-package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
+package glazer.neuhoff.bejeweled;
 
 import java.util.ArrayList;
 
@@ -34,10 +34,10 @@ public class CheckMethods {
 
 	private boolean checkMatch(ShapeLabel piece, int row1, int row2, int col1,
 			int col2) {
-		int pieceId = piece.getId();
-		if (pieceId == grid.getJewelAt(row1, col1).getId()
+		int pieceId = piece.getShapeColor().ordinal();
+		if (pieceId == grid.getJewelAt(row1, col1).getShapeColor().ordinal()
 				&& (!piece.equals(grid.getJewelAt(row1, col1)) && pieceId == grid
-						.getJewelAt(row2, col2).getId())
+						.getJewelAt(row2, col2).getShapeColor().ordinal())
 				&& (!piece.equals(grid.getJewelAt(row2, col2)))) {
 			return true;
 		}
@@ -94,7 +94,7 @@ public class CheckMethods {
 				chain.add(start);
 				for (temp = (r + 1); temp < 8; temp++) {
 					ShapeLabel next = grid.getJewelAt(temp, c);
-					if (next.getId() == (start.getId())) {
+					if (next.getShapeColor() == (start.getShapeColor())) {
 						chain.add(next);
 					} else {
 						break;
@@ -120,7 +120,7 @@ public class CheckMethods {
 				chain.add(start);
 				for (temp = (c + 1); temp < GridPanel.ROWS; temp++) {
 					ShapeLabel next = grid.getJewelAt(r, temp);
-					if (next.getId() == start.getId()) {
+					if (next.getShapeColor() == start.getShapeColor()) {
 						chain.add(next);
 					} else {
 						break;

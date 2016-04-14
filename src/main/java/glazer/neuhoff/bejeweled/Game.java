@@ -1,7 +1,8 @@
-package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
+package glazer.neuhoff.bejeweled;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -32,12 +33,22 @@ public class Game extends JComponent {
 		scorePanel = new ScorePanel(newGame);
 		add(scorePanel, BorderLayout.WEST);
 		add(grid, BorderLayout.CENTER);
+		checkFileExist();
 		getSavedHighScore();
 	}
 
+	private void checkFileExist() throws FileNotFoundException, IOException {
+        File file = new File(System.getProperty("user.home") + "\\HighScore.ser");
+        if (!file.exists()) {
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file));
+
+            output.writeObject(this.scorePanel.getHighScore());
+            output.close();
+        }
+    }
 	private void getSavedHighScore() throws ClassNotFoundException, IOException {
 		ObjectInputStream input = new ObjectInputStream(new FileInputStream(
-				"HighScore.ser"));
+				System.getProperty("user.home") + "\\HighScore.ser"));
 
 		highScore = (Integer) input.readObject();
 		scorePanel.resetHighScore(highScore);
@@ -121,7 +132,7 @@ public class Game extends JComponent {
 		// TODO Auto-generated method stub
 		this.scorePanel.endGame();
 		ObjectOutputStream output = new ObjectOutputStream(
-				new FileOutputStream("HighScore.ser"));
+				new FileOutputStream(System.getProperty("user.home") + "\\HighScore.ser"));
 		output.writeObject(this.scorePanel.getHighScore());
 		output.close();
 	}

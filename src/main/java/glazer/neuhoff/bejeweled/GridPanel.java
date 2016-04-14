@@ -1,4 +1,6 @@
-package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
+package glazer.neuhoff.bejeweled;
+
+import glazer.neuhoff.bejeweled.ShapeLabel.ShapeColor;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -38,13 +40,14 @@ public class GridPanel extends JPanel {
 	}
 
 	private void createSampleJewels() {
-		shapes = new ShapeLabel[] { new ShapeLabel("/purple.png", 0, -1, -1),
-				new ShapeLabel("/blue.png", 1, -1, -1),
-				new ShapeLabel("/green.png", 2, -1, -1),
-				new ShapeLabel("/orange.png", 3, -1, -1),
-				new ShapeLabel("/red.png", 4, -1, -1),
-				new ShapeLabel("/white.png", 5, -1, -1),
-				new ShapeLabel("/yellow.png", 6, -1, -1) };
+		shapes = new ShapeLabel[] { 
+				new ShapeLabel("/purple.png", ShapeLabel.ShapeColor.PURPLE, -1, -1),
+				new ShapeLabel("/blue.png", ShapeLabel.ShapeColor.BLUE, -1, -1),
+				new ShapeLabel("/green.png", ShapeLabel.ShapeColor.GREEN, -1, -1),
+				new ShapeLabel("/orange.png", ShapeLabel.ShapeColor.ORANGE, -1, -1),
+				new ShapeLabel("/red.png", ShapeLabel.ShapeColor.RED, -1, -1),
+				new ShapeLabel("/white.png", ShapeLabel.ShapeColor.WHITE, -1, -1),
+				new ShapeLabel("/yellow.png", ShapeLabel.ShapeColor.YELLOW, -1, -1) };
 
 	}
 
@@ -87,7 +90,7 @@ public class GridPanel extends JPanel {
 			for (int col = 0; col < COLS; col++) {
 				ShapeLabel s = getNextShape(row, col);
 				grid[row][col].setIconPic(s.getIconPic());
-				grid[row][col].setId(s.getId());
+				grid[row][col].setShapeColor(s.getShapeColor());
 			}
 		}
 		initialCheckMethods();
@@ -95,11 +98,11 @@ public class GridPanel extends JPanel {
 
 	public void swap(ShapeLabel label1, ShapeLabel label2) {
 		ShapeLabel swapLabel = new ShapeLabel(label1.getIconPic(),
-				label1.getId(), label1.getRow(), label1.getCol());
+				label1.getShapeColor(), label1.getRow(), label1.getCol());
 		label1.setIconPic(label2.getIconPic());
-		label1.setId(label2.getId());
+		label1.setShapeColor(label2.getShapeColor());
 		label2.setIconPic(swapLabel.getIconPic());
-		label2.setId(swapLabel.getId());
+		label2.setShapeColor(swapLabel.getShapeColor());
 		game.frame.repaint();
 	}
 
@@ -125,7 +128,7 @@ public class GridPanel extends JPanel {
 	}
 
 	private ShapeLabel getLabel(int num, int row, int col) {
-		return new ShapeLabel(shapes[num].getIconPic(), shapes[num].getId(),
+		return new ShapeLabel(shapes[num].getIconPic(), shapes[num].getShapeColor(),
 				row, col);
 	}
 
@@ -139,12 +142,12 @@ public class GridPanel extends JPanel {
 
 		while (pRow > 0) {
 			grid[pRow][pCol].setIconPic(grid[pRow - 1][pCol].getIconPic());
-			grid[pRow][pCol].setId(grid[pRow - 1][pCol].getId());
+			grid[pRow][pCol].setShapeColor(grid[pRow - 1][pCol].getShapeColor());
 			pRow--;
 		}
 		ShapeLabel s = getNextShape(pRow, pCol);
 		grid[0][pCol].setIconPic(s.getIconPic());
-		grid[0][pCol].setId(s.getId());
+		grid[0][pCol].setShapeColor(s.getShapeColor());
 	}
 
 	public void deleteMatches(ArrayList<ArrayList<ShapeLabel>> deletions,

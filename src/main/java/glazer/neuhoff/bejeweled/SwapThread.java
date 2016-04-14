@@ -1,4 +1,5 @@
-package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
+package glazer.neuhoff.bejeweled;
+
 
 public class SwapThread extends Thread {
 	private ShapeLabel pressedLabel;

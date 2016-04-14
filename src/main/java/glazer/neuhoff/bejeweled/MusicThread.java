@@ -1,4 +1,4 @@
-package glazer.neuhoff.bejeweled.glazer.neuhoff.bejeweled;
+package glazer.neuhoff.bejeweled;
 
 import java.applet.Applet;
 import java.applet.AudioClip;
